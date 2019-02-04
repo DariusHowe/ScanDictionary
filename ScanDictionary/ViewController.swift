@@ -16,7 +16,7 @@ class ViewController: UIViewController, G8TesseractDelegate {
 
         guard let tesseract: G8Tesseract = G8Tesseract(language:"eng+ita") else { return }
         tesseract.delegate = self
-        tesseract.charWhitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890"
+        tesseract.charWhitelist = "-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890"
         tesseract.image = UIImage(named: "vrkIj.png")!
         tesseract.recognize()
         
