@@ -7,14 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		756E4D7122088815009F3346 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 756E4D7022088815009F3346 /* tessdata */; };
+		756E4D73220888DF009F3346 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 756E4D72220888DF009F3346 /* libz.tbd */; };
+		756E4D75220888FE009F3346 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756E4D74220888FE009F3346 /* CoreImage.framework */; };
+		756E4D772208891C009F3346 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756E4D762208891C009F3346 /* TesseractOCR.framework */; };
+		756E4D7922088AC7009F3346 /* vrkIj.png in Resources */ = {isa = PBXBuildFile; fileRef = 756E4D7822088AC7009F3346 /* vrkIj.png */; };
 		75978C6B220885EC007DA3F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6A220885EC007DA3F2 /* AppDelegate.swift */; };
 		75978C6D220885EC007DA3F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6C220885EC007DA3F2 /* ViewController.swift */; };
 		75978C70220885EC007DA3F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C6E220885EC007DA3F2 /* Main.storyboard */; };
 		75978C72220885ED007DA3F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75978C71220885ED007DA3F2 /* Assets.xcassets */; };
 		75978C75220885ED007DA3F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C73220885ED007DA3F2 /* LaunchScreen.storyboard */; };
+		8A485F9172686BE790401E89 /* Pods_ScanDictionary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52EF104DF1E05C097106C82 /* Pods_ScanDictionary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4DF3FAD9CF6B1604F727346C /* Pods-ScanDictionary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanDictionary.release.xcconfig"; path = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary.release.xcconfig"; sourceTree = "<group>"; };
+		756E4D7022088815009F3346 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
+		756E4D72220888DF009F3346 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		756E4D74220888FE009F3346 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		756E4D762208891C009F3346 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		756E4D7822088AC7009F3346 /* vrkIj.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vrkIj.png; sourceTree = "<group>"; };
 		75978C67220885EC007DA3F2 /* ScanDictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScanDictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75978C6A220885EC007DA3F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75978C6C220885EC007DA3F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +34,8 @@
 		75978C71220885ED007DA3F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75978C74220885ED007DA3F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75978C76220885ED007DA3F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7E172CE425B7F2555087F8A /* Pods-ScanDictionary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanDictionary.debug.xcconfig"; path = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary.debug.xcconfig"; sourceTree = "<group>"; };
+		D52EF104DF1E05C097106C82 /* Pods_ScanDictionary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanDictionary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +43,44 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				756E4D772208891C009F3346 /* TesseractOCR.framework in Frameworks */,
+				756E4D75220888FE009F3346 /* CoreImage.framework in Frameworks */,
+				756E4D73220888DF009F3346 /* libz.tbd in Frameworks */,
+				8A485F9172686BE790401E89 /* Pods_ScanDictionary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A4CA4B7CF6368CE7307B80B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C7E172CE425B7F2555087F8A /* Pods-ScanDictionary.debug.xcconfig */,
+				4DF3FAD9CF6B1604F727346C /* Pods-ScanDictionary.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		3BBAE996434C1ED3FEEF4A4E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				756E4D762208891C009F3346 /* TesseractOCR.framework */,
+				756E4D74220888FE009F3346 /* CoreImage.framework */,
+				756E4D72220888DF009F3346 /* libz.tbd */,
+				D52EF104DF1E05C097106C82 /* Pods_ScanDictionary.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		75978C5E220885EC007DA3F2 = {
 			isa = PBXGroup;
 			children = (
+				756E4D7022088815009F3346 /* tessdata */,
 				75978C69220885EC007DA3F2 /* ScanDictionary */,
 				75978C68220885EC007DA3F2 /* Products */,
+				2A4CA4B7CF6368CE7307B80B /* Pods */,
+				3BBAE996434C1ED3FEEF4A4E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +99,7 @@
 				75978C6C220885EC007DA3F2 /* ViewController.swift */,
 				75978C6E220885EC007DA3F2 /* Main.storyboard */,
 				75978C71220885ED007DA3F2 /* Assets.xcassets */,
+				756E4D7822088AC7009F3346 /* vrkIj.png */,
 				75978C73220885ED007DA3F2 /* LaunchScreen.storyboard */,
 				75978C76220885ED007DA3F2 /* Info.plist */,
 			);
@@ -71,9 +113,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75978C79220885ED007DA3F2 /* Build configuration list for PBXNativeTarget "ScanDictionary" */;
 			buildPhases = (
+				F4012F4E9E6CB6A068B37516 /* [CP] Check Pods Manifest.lock */,
 				75978C63220885EC007DA3F2 /* Sources */,
 				75978C64220885EC007DA3F2 /* Frameworks */,
 				75978C65220885EC007DA3F2 /* Resources */,
+				FE357486B1CEEBBA1E42FCE8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -123,12 +167,61 @@
 			buildActionMask = 2147483647;
 			files = (
 				75978C75220885ED007DA3F2 /* LaunchScreen.storyboard in Resources */,
+				756E4D7122088815009F3346 /* tessdata in Resources */,
+				756E4D7922088AC7009F3346 /* vrkIj.png in Resources */,
 				75978C72220885ED007DA3F2 /* Assets.xcassets in Resources */,
 				75978C70220885EC007DA3F2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F4012F4E9E6CB6A068B37516 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ScanDictionary-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FE357486B1CEEBBA1E42FCE8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		75978C63220885EC007DA3F2 /* Sources */ = {
@@ -280,10 +373,12 @@
 		};
 		75978C7A220885ED007DA3F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7E172CE425B7F2555087F8A /* Pods-ScanDictionary.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT75263PR3;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ScanDictionary/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -298,10 +393,12 @@
 		};
 		75978C7B220885ED007DA3F2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DF3FAD9CF6B1604F727346C /* Pods-ScanDictionary.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JT75263PR3;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ScanDictionary/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
