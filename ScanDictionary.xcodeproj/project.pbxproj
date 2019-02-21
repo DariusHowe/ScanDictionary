@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75454A6D221D9C4000099DAC /* DefinitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75454A6C221D9C4000099DAC /* DefinitionViewController.swift */; };
 		756E4D7122088815009F3346 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 756E4D7022088815009F3346 /* tessdata */; };
 		756E4D73220888DF009F3346 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 756E4D72220888DF009F3346 /* libz.tbd */; };
 		756E4D75220888FE009F3346 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756E4D74220888FE009F3346 /* CoreImage.framework */; };
 		756E4D772208891C009F3346 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756E4D762208891C009F3346 /* TesseractOCR.framework */; };
 		756E4D7922088AC7009F3346 /* vrkIj.png in Resources */ = {isa = PBXBuildFile; fileRef = 756E4D7822088AC7009F3346 /* vrkIj.png */; };
+		756E4D7B2211C396009F3346 /* WebScrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E4D7A2211C396009F3346 /* WebScrapper.swift */; };
+		756E4D7D2211CE17009F3346 /* ScanDictionary.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 756E4D7C2211CE17009F3346 /* ScanDictionary.bundle.js */; };
 		75978C6B220885EC007DA3F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6A220885EC007DA3F2 /* AppDelegate.swift */; };
 		75978C6D220885EC007DA3F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6C220885EC007DA3F2 /* ViewController.swift */; };
 		75978C70220885EC007DA3F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C6E220885EC007DA3F2 /* Main.storyboard */; };
@@ -22,11 +25,14 @@
 
 /* Begin PBXFileReference section */
 		4DF3FAD9CF6B1604F727346C /* Pods-ScanDictionary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanDictionary.release.xcconfig"; path = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary.release.xcconfig"; sourceTree = "<group>"; };
+		75454A6C221D9C4000099DAC /* DefinitionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionViewController.swift; sourceTree = "<group>"; };
 		756E4D7022088815009F3346 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		756E4D72220888DF009F3346 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		756E4D74220888FE009F3346 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		756E4D762208891C009F3346 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		756E4D7822088AC7009F3346 /* vrkIj.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vrkIj.png; sourceTree = "<group>"; };
+		756E4D7A2211C396009F3346 /* WebScrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebScrapper.swift; sourceTree = "<group>"; };
+		756E4D7C2211CE17009F3346 /* ScanDictionary.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = ScanDictionary.bundle.js; path = JS/dist/ScanDictionary.bundle.js; sourceTree = SOURCE_ROOT; };
 		75978C67220885EC007DA3F2 /* ScanDictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScanDictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75978C6A220885EC007DA3F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75978C6C220885EC007DA3F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -95,9 +101,12 @@
 		75978C69220885EC007DA3F2 /* ScanDictionary */ = {
 			isa = PBXGroup;
 			children = (
+				756E4D7C2211CE17009F3346 /* ScanDictionary.bundle.js */,
 				75978C6A220885EC007DA3F2 /* AppDelegate.swift */,
 				75978C6C220885EC007DA3F2 /* ViewController.swift */,
+				756E4D7A2211C396009F3346 /* WebScrapper.swift */,
 				75978C6E220885EC007DA3F2 /* Main.storyboard */,
+				75454A6C221D9C4000099DAC /* DefinitionViewController.swift */,
 				75978C71220885ED007DA3F2 /* Assets.xcassets */,
 				756E4D7822088AC7009F3346 /* vrkIj.png */,
 				75978C73220885ED007DA3F2 /* LaunchScreen.storyboard */,
@@ -166,6 +175,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				756E4D7D2211CE17009F3346 /* ScanDictionary.bundle.js in Resources */,
 				75978C75220885ED007DA3F2 /* LaunchScreen.storyboard in Resources */,
 				756E4D7122088815009F3346 /* tessdata in Resources */,
 				756E4D7922088AC7009F3346 /* vrkIj.png in Resources */,
@@ -228,6 +238,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				756E4D7B2211C396009F3346 /* WebScrapper.swift in Sources */,
+				75454A6D221D9C4000099DAC /* DefinitionViewController.swift in Sources */,
 				75978C6D220885EC007DA3F2 /* ViewController.swift in Sources */,
 				75978C6B220885EC007DA3F2 /* AppDelegate.swift in Sources */,
 			);

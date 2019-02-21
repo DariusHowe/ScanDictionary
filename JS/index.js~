@@ -1,0 +1,149 @@
+let axios = require('axios');
+let cheerio = require('cheerio');
+let fs = require('fs');
+var entities = require("entities");
+
+
+// 
+/* 
+word: Random
+    definitons: {
+        category: Adverb
+        Definitions: [
+
+            name: Test,
+            description: peter,
+
+            name: Test,
+            description: peter
+        ]
+
+        category: Noun
+        Definitions: [
+
+            name: Test,
+            description: peter,
+
+            name: Test,
+            description: peter
+        ]
+    }
+*/
+
+
+
+class Word {
+    constructor(name) {
+        this.name = name;
+        this.definitionLists = [];
+    }
+    // Adding a method to the constructor
+    // greet() {
+    //     return `${this.name} says hello.`;
+    // }
+}
+
+class DefinitionList {
+    constructor(category) {
+        this.category = category;
+        this.definitions = [];
+    }
+}
+
+class Definition {
+    // constructor(description, example, label) {
+    //     this.description = description;
+    //     this.label = label;
+    //     this.example = example;
+    // }
+    constructor() {
+   
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function getDefinitionList($, elem) {
+        const definitionListData = $(elem).find('.e1q3nk1v3');
+        const category = $(elem).find('.luna-pos');
+        console.log(category.text());
+        var definitionList = new DefinitionList(category)
+
+        definitionListData.each((i, elem) => {
+            var definition = getDefinition($, elem);
+            definitionList.definitions.push(definition);
+        });
+        return definitionList;
+    }
+
+    function getDefinition($, elem) {
+        const definitionData = $(elem).find('.e1q3nk1v4');
+        var definition = new Definition()
+
+        definitionData.each((i, elem) => {
+            if ($(elem).children().first().hasClass('luna-labset')) {
+                const label = $(elem).find('.luna-label').text();
+                definition.label = label;
+                console.log('\tlabel: ', label);
+            } else {
+                const example = $(elem).find('.luna-example').text();
+                definition.example = example
+
+                $(elem).find('.luna-example').remove();
+
+                var description = $(elem).text()
+                definition.description = description;
+
+                console.log('\tDescription: ', description);
+                console.log('\tExample: ', example);
+            }
+        });        
+        console.log();
+        return definition;
+    }
+
+  let getDefinitions = html => {
+
+    const $ = cheerio.load(html);
+
+    const word = new Word('test');
+
+    const items = $('.no-collapse').eq(1).prevAll().toArray().reverse();
+    
+    console.log(items.length)
+    $(items).each((i, elem) => {
+
+        if ($(elem).hasClass('e1hk9ate0')) {
+            
+            word.definitionLists.push(getDefinitionList($, elem));
+
+        } else {
+            $(elem).find('.e1hk9ate0').each((i, elem) => {
+                word.definitionLists.push(getDefinitionList($, elem));
+            });
+        }
+    });
+    // console.log(word.definitionLists[0]);
+ 
+  }
+
+axios.get('https://www.dictionary.com/browse/random')
+    .then(response => {
+        // getData(response.data);
+        getDefinitions(response.data);
+    })
+    .catch(err => {
+        console.log(err);
+    })
+

@@ -1,0 +1,18 @@
+{
+  "name": "scanDictionary",
+  "version": "1.0.0",
+  "description": "Installs packages for project",
+  "main": "index.js",
+  "scripts": {
+	"build": "webpack --progress --colors”
+  },
+  "author": "Matt Shober",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2"
+  },
+  "devDependencies": {
+    "webpack": "^4.29.3"
+  }
+}
