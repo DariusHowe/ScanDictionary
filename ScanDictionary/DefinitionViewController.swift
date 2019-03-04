@@ -19,7 +19,7 @@ class DefinitionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let word = "work"
+        let word = "track"
         let url = URL(string: "http://www.dictionary.com/browse/" + word)!
         
         let webScrapper = WebScrapper.shared
@@ -66,15 +66,8 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // If we wanted to always show a section header regardless of whether or not there were rows in it,
-        // then uncomment this line below:
         return SectionHeaderHeight
-        // First check if there is a valid section of table.
-        // Then we check that for the section there is more than 1 row.
-//        if let tableSection = TableSection(rawValue: section), let movieData = data[tableSection], movieData.count > 0 {
-//            return SectionHeaderHeight
-//        }
-//        return 0
+
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -94,37 +87,39 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        // Similar to above, first check if there is a valid section of table.
-        // Then we check that for the section there is a row.
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DefinitionViewCell
+        
         
         print("Setting section \(indexPath.section), row \(indexPath.row)")
         if let definition = webData?.definitionLists[indexPath.section].definitions[indexPath.row] {
             
+            let description = NSAttributedString(string: definition.description)
             
-            
-            if let titleLabel = cell.viewWithTag(10) as? UILabel {
-                let italicFont = [NSAttributedString.Key.font : UIFont.italicSystemFont(ofSize: 15)]
-                
-                let itemNumber = NSMutableAttributedString(string: "\(indexPath.row + 1).  ")
-                if let label = definition.label {
-                    let labelString = NSAttributedString(string: label + " - ", attributes: italicFont)
-                    itemNumber.append(labelString)
-                }
-                
-                let description = NSAttributedString(string: definition.description)
-                itemNumber.append(description)
+            if let label = definition.label {
+                let italicFont = [NSAttributedString.Key.font : UIFont.italicSystemFont(ofSize: 17)]
+                let labelString = NSMutableAttributedString(string: label + " - ", attributes: italicFont)
+                labelString.append(description)
+                cell.descriptionLabel.attributedText = labelString
+            } else {
+                cell.descriptionLabel.attributedText = description
+            }
 
-                titleLabel.attributedText = itemNumber
-            }
-            if let subtitleLabel = cell.viewWithTag(20) as? UILabel {
-                subtitleLabel.text = definition.example
-            }
+            
+
+            cell.item.text = String(indexPath.row + 1) + "."
+            cell.example.text = definition.example
+
+
         }
         return cell
     }
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        let height: CGFloat = 100
-//        return height
-//    }
 }
+
+
+class DefinitionViewCell: UITableViewCell {
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
+    @IBOutlet weak var example: UILabel!
+    @IBOutlet weak var item: UILabel!
+}
+

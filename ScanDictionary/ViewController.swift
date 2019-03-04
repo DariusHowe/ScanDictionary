@@ -20,17 +20,17 @@ class ViewController: UIViewController, G8TesseractDelegate {
 //        }
 //        
         
-        let url = URL(string: "http://www.dictionary.com/browse/random")!
+//        let url = URL(string: "http://www.dictionary.com/browse/gender")!
+//
+//        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+//            guard let data = data else { return }
+//            let finalData = String(data: data, encoding: .utf8)!
+//            ws.analyze(finalData) { (score) in
+//                print(score)
+//            }
+//        }
 
-        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-            guard let data = data else { return }
-            let finalData = String(data: data, encoding: .utf8)!
-            ws.analyze(finalData) { (score) in
-                print(score)
-            }
-        }
-
-        task.resume()
+//        task.resume()  
         
         
 //        guard let tesseract: G8Tesseract = G8Tesseract(language:"eng+ita") else { return }
