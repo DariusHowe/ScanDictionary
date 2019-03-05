@@ -14,15 +14,35 @@ import Photos
 class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptureDelegate {
 
     private let captureSession = AVCaptureSession()
-    var capturePhotoOutput: AVCapturePhotoOutput?
+    private let capturePhotoOutput = AVCapturePhotoOutput()
+    
     var previewLayer: AVCaptureVideoPreviewLayer?
     @objc var captureDevice: AVCaptureDevice?
 
     @IBOutlet var preView: UIView!
 
+    let tesseract = G8Tesseract(language:"eng")!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
+        
+//      Initialize Tesseract
+        tesseract.delegate = self
+        tesseract.charWhitelist = "-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890"
+//        tesseract.engineMode = .tesseractCubeCombined
+//        tesseract.pageSegmentationMode = .singleBlock
+
+        
+        let image = UIImage(named: "Test2.jpg")
+        tesseract.image = image!
+        tesseract.recognize()
+        
+        print(tesseract.rect)
+        print(tesseract.recognizedText ?? "")
+        return;
+//      Request Authorization
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized: // The user has previously granted access to the camera.
             print("Authorized")
@@ -39,33 +59,28 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
             return
         }
 
-        self.captureSession.sessionPreset = .photo
-        self.capturePhotoOutput = AVCapturePhotoOutput()
         
-        guard let device = AVCaptureDevice.default(for: .video) else { return }
+        self.captureSession.sessionPreset = .photo
+//        AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+        guard let device = AVCaptureDevice.default(for: .video) else {
+            print("No Camera")
+//          Disable button
+            return
+            
+        }
         self.captureDevice = device
+        
         let input = try! AVCaptureDeviceInput(device: self.captureDevice!)
         self.captureSession.addInput(input)
-        self.captureSession.addOutput(self.capturePhotoOutput!)
+        self.captureSession.addOutput(self.capturePhotoOutput)
         
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
         self.previewLayer?.frame = self.preView.bounds
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.previewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+        
         self.preView.layer.addSublayer(self.previewLayer!)
         self.captureSession.startRunning()
-        
-
-        
-//        guard let tesseract: G8Tesseract = G8Tesseract(language:"eng+ita") else { return }
-//        tesseract.delegate = self
-//        tesseract.charWhitelist = "-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890"
-//        
-//        tesseract.image = UIImage(named: "vrkIj.png")!
-//        tesseract.recognize()
-//
-//        print(tesseract.rect)
-//        print(tesseract.recognizedText ?? "")
 
     }
 
@@ -76,19 +91,26 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         photoSettings.isAutoStillImageStabilizationEnabled = true
         photoSettings.flashMode = .off
         photoSettings.isHighResolutionPhotoEnabled = false
-        self.capturePhotoOutput?.capturePhoto(with: photoSettings, delegate: self)
+        self.capturePhotoOutput.capturePhoto(with: photoSettings, delegate: self)
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        print(#function)
      
-        guard let tesseract: G8Tesseract = G8Tesseract(language:"eng+ita") else { return }
         guard let data = photo.fileDataRepresentation() else { return }
         guard let image = UIImage(data: data) else { return }
+//        let my300dpiImage = UIImage(cgImage: image.cgImage!, scale: 300.0 / 72.0, orientation: .up)
         
-        tesseract.delegate = self
-        tesseract.charWhitelist = "-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890"
-        tesseract.image = image
+        print(image.imageRendererFormat)
+        print(image.scale)
+        
+        let newImage = UIImage(data: image.pngData()!)!
+        let imageView  = UIImageView(image: newImage)
+        imageView.frame = self.preView.bounds
+        self.preView.addSubview(imageView)
+        self.previewLayer?.removeFromSuperlayer()
+        self.preView.addSubview(imageView)
+        
+        tesseract.image = newImage.noir()
         tesseract.recognize()
 
         print(tesseract.rect)
@@ -116,3 +138,30 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
 
 }
 
+extension UIImage {
+    var blackAndWhite: UIImage {
+        let context = CIContext(options: nil)
+        let currentFilter = CIFilter(name: "CIPhotoEffectNoir")!
+        currentFilter.setValue(CIImage(image: self), forKey: kCIInputImageKey)
+        let output = currentFilter.outputImage!
+        let cgImage = context.createCGImage(output, from: output.extent)!
+        let processedImage = UIImage(cgImage: cgImage, scale: scale, orientation: imageOrientation)
+        
+        return processedImage
+    }
+    
+    
+}
+
+extension UIImage {
+    
+    func noir() -> UIImage {
+        let context = CIContext(options: nil)
+        
+        let currentFilter = CIFilter(name: "CIPhotoEffectNoir")
+        currentFilter!.setValue(CIImage(image: self), forKey: kCIInputImageKey)
+        let output = currentFilter!.outputImage
+        let cgimg = context.createCGImage(output!, from: output!.extent)
+        let processedImage = UIImage(cgImage: cgimg!, scale: scale, orientation: imageOrientation)
+        return processedImage
+    }}
