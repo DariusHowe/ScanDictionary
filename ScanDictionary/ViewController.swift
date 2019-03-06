@@ -10,6 +10,7 @@ import UIKit
 import TesseractOCR
 import AVFoundation
 import Photos
+import GPUImage
 
 class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptureDelegate {
 
@@ -34,13 +35,43 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
 //        tesseract.engineMode = .tesseractCubeCombined
 //        tesseract.pageSegmentationMode = .singleBlock
 
+//        GPUImageAverageLuminanceThresholdFilter
         
-        let image = UIImage(named: "Test2.jpg")
-        tesseract.image = image!
+//        let image = UIImage(named: "Test2.jpg")!
+        var image = UIImage(named: "screencapture.jpg")!
+        image = UIImage(cgImage: image.cgImage!, scale: 1, orientation: image.imageOrientation)
+
+
+        print(image.size)
+
+//        let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
+//        luminanceThresholdFilter.threshold = 0.3
+//        image = luminanceThresholdFilter.image(byFilteringImage: image)!
+        
+//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
+//        stillImageFilter.blurRadiusInPixels = 4.0
+//        image = stillImageFilter.image(byFilteringImage: image)!
+
+        let imageView  = UIImageView(image: image)
+        imageView.frame = self.preView.bounds
+        self.preView.addSubview(imageView)
+        
+        tesseract.image = image
         tesseract.recognize()
+
+       
+//        let k = Draw(frame: CGRect(
+//            origin: CGPoint(x: 50, y: 50),
+//            size: CGSize(width: 964, height: 1302)))
+        
+        // Add the view to the view hierarchy so that it shows up on screen
+//        self.view.addSubview(k)
+        
         
         print(tesseract.rect)
-        print(tesseract.recognizedText ?? "")
+        
+        print(tesseract.recognizedText ?? "No Text Recognized")
+
         return;
 //      Request Authorization
         switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -65,6 +96,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         guard let device = AVCaptureDevice.default(for: .video) else {
             print("No Camera")
 //          Disable button
+            
             return
             
         }
@@ -94,6 +126,8 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         self.capturePhotoOutput.capturePhoto(with: photoSettings, delegate: self)
     }
     
+    
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
      
         guard let data = photo.fileDataRepresentation() else { return }
@@ -110,7 +144,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         self.previewLayer?.removeFromSuperlayer()
         self.preView.addSubview(imageView)
         
-        tesseract.image = newImage.noir()
+        tesseract.image = newImage
         tesseract.recognize()
 
         print(tesseract.rect)
@@ -135,33 +169,42 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
     func shouldCancelImageRecognitionForTesseract(tesseract: G8Tesseract!) -> Bool {
         return false // return true if you need to interrupt tesseract before it finishes
     }
+    
+    func preprocessedImage(for tesseract: G8Tesseract, sourceImage: UIImage) -> UIImage? {
+        // sourceImage is the same image you sent to Tesseract above
+        print(#function)
+        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
+        stillImageFilter.blurRadiusInPixels = 4
+        let filteredImage = stillImageFilter.image(byFilteringImage: sourceImage)
+
+        return filteredImage
+    }
 
 }
 
-extension UIImage {
-    var blackAndWhite: UIImage {
-        let context = CIContext(options: nil)
-        let currentFilter = CIFilter(name: "CIPhotoEffectNoir")!
-        currentFilter.setValue(CIImage(image: self), forKey: kCIInputImageKey)
-        let output = currentFilter.outputImage!
-        let cgImage = context.createCGImage(output, from: output.extent)!
-        let processedImage = UIImage(cgImage: cgImage, scale: scale, orientation: imageOrientation)
-        
-        return processedImage
+
+
+class Draw: UIView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.clear
+
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+      
+        let color: UIColor = UIColor.black
+        
+        let bpath:UIBezierPath = UIBezierPath(rect: rect)
+        
+        color.set()
+        bpath.stroke()
+        
+    }
     
 }
-
-extension UIImage {
-    
-    func noir() -> UIImage {
-        let context = CIContext(options: nil)
-        
-        let currentFilter = CIFilter(name: "CIPhotoEffectNoir")
-        currentFilter!.setValue(CIImage(image: self), forKey: kCIInputImageKey)
-        let output = currentFilter!.outputImage
-        let cgimg = context.createCGImage(output!, from: output!.extent)
-        let processedImage = UIImage(cgImage: cgimg!, scale: scale, orientation: imageOrientation)
-        return processedImage
-    }}

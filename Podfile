@@ -11,4 +11,5 @@ target 'ScanDictionary' do
   # Pods for ScanDictionary
     pod 'TesseractOCRiOS'
 
+	pod 'GPUImage'
 end
