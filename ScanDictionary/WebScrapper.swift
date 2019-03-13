@@ -49,7 +49,7 @@ class WebScrapper: NSObject {
     
     
     
-    func analyze(_ sentence: String, completion: @escaping (_ res: Word) -> Void) {
+    func analyze(_ html: String, misspelled: Bool, completion: @escaping (_ res: Word) -> Void) {
         // Run this asynchronously in the background
         DispatchQueue.global(qos: .userInitiated).async {
 //            var score: NSDictionary = [:]
@@ -61,9 +61,8 @@ class WebScrapper: NSObject {
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
             // In Objective-C you can actually write `context[@"analyze"]` but unfortunately that's
             // not possible in Swift yet.
-            if let result = jsAnalyzer?.objectForKeyedSubscript("analyze").call(withArguments: [sentence]) {
-//                score = result.toDictionary()! as NSDictionary
-               
+            if let result = jsAnalyzer?.objectForKeyedSubscript("analyze").call(withArguments: [html, misspelled]) {
+
                 let serialData = try! JSONSerialization.data(withJSONObject: result.toObject(), options: .prettyPrinted)
                 let decoder = JSONDecoder()
                 let word = try! decoder.decode(Word.self, from: serialData)

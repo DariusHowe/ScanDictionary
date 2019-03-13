@@ -20,6 +20,8 @@
 		75978C70220885EC007DA3F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C6E220885EC007DA3F2 /* Main.storyboard */; };
 		75978C72220885ED007DA3F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75978C71220885ED007DA3F2 /* Assets.xcassets */; };
 		75978C75220885ED007DA3F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C73220885ED007DA3F2 /* LaunchScreen.storyboard */; };
+		759CF847222EE76200A5A5B6 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 759CF846222EE76200A5A5B6 /* test.png */; };
+		759CF84D222F729500A5A5B6 /* screencapture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 759CF84C222F729500A5A5B6 /* screencapture.jpg */; };
 		8A485F9172686BE790401E89 /* Pods_ScanDictionary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52EF104DF1E05C097106C82 /* Pods_ScanDictionary.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +42,8 @@
 		75978C71220885ED007DA3F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75978C74220885ED007DA3F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75978C76220885ED007DA3F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		759CF846222EE76200A5A5B6 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
+		759CF84C222F729500A5A5B6 /* screencapture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = screencapture.jpg; sourceTree = "<group>"; };
 		C7E172CE425B7F2555087F8A /* Pods-ScanDictionary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanDictionary.debug.xcconfig"; path = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary.debug.xcconfig"; sourceTree = "<group>"; };
 		D52EF104DF1E05C097106C82 /* Pods_ScanDictionary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanDictionary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -104,6 +108,8 @@
 				756E4D7C2211CE17009F3346 /* ScanDictionary.bundle.js */,
 				75978C6A220885EC007DA3F2 /* AppDelegate.swift */,
 				75978C6C220885EC007DA3F2 /* ViewController.swift */,
+				759CF84C222F729500A5A5B6 /* screencapture.jpg */,
+				759CF846222EE76200A5A5B6 /* test.png */,
 				756E4D7A2211C396009F3346 /* WebScrapper.swift */,
 				75978C6E220885EC007DA3F2 /* Main.storyboard */,
 				75454A6C221D9C4000099DAC /* DefinitionViewController.swift */,
@@ -177,6 +183,8 @@
 			files = (
 				756E4D7D2211CE17009F3346 /* ScanDictionary.bundle.js in Resources */,
 				75978C75220885ED007DA3F2 /* LaunchScreen.storyboard in Resources */,
+				759CF84D222F729500A5A5B6 /* screencapture.jpg in Resources */,
+				759CF847222EE76200A5A5B6 /* test.png in Resources */,
 				756E4D7122088815009F3346 /* tessdata in Resources */,
 				756E4D7922088AC7009F3346 /* vrkIj.png in Resources */,
 				75978C72220885ED007DA3F2 /* Assets.xcassets in Resources */,
@@ -218,12 +226,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
 				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
