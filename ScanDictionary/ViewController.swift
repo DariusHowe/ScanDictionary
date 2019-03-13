@@ -24,56 +24,32 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
 
     let tesseract = G8Tesseract(language:"eng")!
     
+    private var capturePhoto = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        let utterance = AVSpeechUtterance(string: "hello world!")
+//        let synth = AVSpeechSynthesizer()
+//        synth.speak(utterance)
         
+
+//        if let tesseract = G8Tesseract(language: "eng+fra") {
+//
+//            tesseract.engineMode = .tesseractCubeCombined
+//
+//            tesseract.pageSegmentationMode = .auto
+//
+//        }
         
 //      Initialize Tesseract
+        tesseract.rect = self.preView.bounds
         tesseract.delegate = self
-        tesseract.charWhitelist = "-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890"
-//        tesseract.engineMode = .tesseractCubeCombined
-//        tesseract.pageSegmentationMode = .singleBlock
+        tesseract.charWhitelist = "-_(){}[]=%.,?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890/"
 
-//        GPUImageAverageLuminanceThresholdFilter
         
-//        let image = UIImage(named: "Test2.jpg")!
-        var image = UIImage(named: "screencapture.jpg")!
-        image = UIImage(cgImage: image.cgImage!, scale: 1, orientation: image.imageOrientation)
-
-
-        print(image.size)
-
-//        let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
-//        luminanceThresholdFilter.threshold = 0.3
-//        image = luminanceThresholdFilter.image(byFilteringImage: image)!
-        
-//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
-//        stillImageFilter.blurRadiusInPixels = 4.0
-//        image = stillImageFilter.image(byFilteringImage: image)!
-
-        let imageView  = UIImageView(image: image)
-        imageView.frame = self.preView.bounds
-        self.preView.addSubview(imageView)
-        
-        tesseract.image = image
-        tesseract.recognize()
-
-       
-//        let k = Draw(frame: CGRect(
-//            origin: CGPoint(x: 50, y: 50),
-//            size: CGSize(width: 964, height: 1302)))
-        
-        // Add the view to the view hierarchy so that it shows up on screen
-//        self.view.addSubview(k)
-        
-        
-        print(tesseract.rect)
-        
-        print(tesseract.recognizedText ?? "No Text Recognized")
-
-        return;
-//      Request Authorization
+        print(tesseract.isEngineConfigured)
+    //      Request Authorization
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized: // The user has previously granted access to the camera.
             print("Authorized")
@@ -89,23 +65,21 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         case .restricted: // The user can't grant access due to restrictions.
             return
         }
-
         
         self.captureSession.sessionPreset = .photo
-//        AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
         guard let device = AVCaptureDevice.default(for: .video) else {
             print("No Camera")
 //          Disable button
             
             return
-            
         }
         self.captureDevice = device
-        
         let input = try! AVCaptureDeviceInput(device: self.captureDevice!)
         self.captureSession.addInput(input)
-        self.captureSession.addOutput(self.capturePhotoOutput)
+       
         
+        self.captureSession.addOutput(self.capturePhotoOutput)
+        capturePhotoOutput.connection(with: AVFoundation.AVMediaType.video)!.videoOrientation = .portrait
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
         self.previewLayer?.frame = self.preView.bounds
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
@@ -113,44 +87,117 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         
         self.preView.layer.addSublayer(self.previewLayer!)
         self.captureSession.startRunning()
-
     }
+    
+    var scope: Draw!
+    var imageView: UIImageView!
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        DispatchQueue.main.async {
+            let bounds = self.preView.bounds
 
-    @IBAction func capture(_ sender: Any) {
+            let height: CGFloat = 0.15 * bounds.height
+            let width = 0.75 * bounds.width
+            
+            let origin = CGPoint(x: (bounds.maxX / 2) - (width / 2), y: (bounds.maxY / 2) - (height / 2))
+            self.scope = Draw(frame: CGRect(
+                origin: origin,
+                size: CGSize(width: width, height: height)))
+            
+            //      Add the view to the view hierarchy so that it shows up on screen
+            self.preView.addSubview(self.scope)
+            print("Bounds for scope: \(self.scope.bounds)")
+        }
+    }
+    
+    @IBAction func capture(_ sender: UIButton) {
         print(#function)
+     
+        if capturePhoto {
+            let photoSettings = AVCapturePhotoSettings.init(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
+            photoSettings.isAutoStillImageStabilizationEnabled = true
+            photoSettings.flashMode = .off
+            photoSettings.isHighResolutionPhotoEnabled = false
+            self.capturePhotoOutput.capturePhoto(with: photoSettings, delegate: self)
+            DispatchQueue.main.async {
+//                self.captureSession.stopRunning()
+                sender.setTitle("reset", for: UIControl.State.normal)
 
-        let photoSettings = AVCapturePhotoSettings.init(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
-        photoSettings.isAutoStillImageStabilizationEnabled = true
-        photoSettings.flashMode = .off
-        photoSettings.isHighResolutionPhotoEnabled = false
-        self.capturePhotoOutput.capturePhoto(with: photoSettings, delegate: self)
+            }
+            capturePhoto = false
+            
+        } else {
+            capturePhoto = true
+            sender.setTitle("Take photo", for: UIControl.State.normal)
+//            self.captureSession.startRunning()
+            self.imageView.removeFromSuperview()
+
+        }
     }
-    
-    
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-     
+        
         guard let data = photo.fileDataRepresentation() else { return }
-        guard let image = UIImage(data: data) else { return }
-//        let my300dpiImage = UIImage(cgImage: image.cgImage!, scale: 300.0 / 72.0, orientation: .up)
+
+        var ci_image = CIImage(data: data)!.oriented(CGImagePropertyOrientation.right)
         
-        print(image.imageRendererFormat)
-        print(image.scale)
+        let height = ci_image.extent.height
+        let width = ci_image.extent.width
+        let newHeight = 0.15 * ci_image.extent.height
+        let newWidth = 0.75 * ci_image.extent.width
         
-        let newImage = UIImage(data: image.pngData()!)!
-        let imageView  = UIImageView(image: newImage)
-        imageView.frame = self.preView.bounds
-        self.preView.addSubview(imageView)
-        self.previewLayer?.removeFromSuperlayer()
-        self.preView.addSubview(imageView)
+        let origin = CGPoint(x: (width / 2) - (newWidth / 2), y: (height / 2) - (newHeight / 2)) // centers vertically & horizontally
+        let size = CGSize(width: newWidth, height: newHeight)
         
-        tesseract.image = newImage
+        ci_image = ci_image.cropped(to: CGRect(origin: origin, size: size))
+    
+        var image = UIImage(cgImage: CIContext().createCGImage(ci_image, from:ci_image.extent)!)
+        
+        let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
+        luminanceThresholdFilter.threshold = 0.4
+        image = luminanceThresholdFilter.image(byFilteringImage: image)!
+        
+        print("Width: \(image.size.width)\t Height: \(image.size.height)")
+
+        imageView = UIImageView(image: image)
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
+        imageView.frame = scope.bounds
+        
+        DispatchQueue.main.async {
+            self.scope.addSubview(self.imageView)
+        }
+        
+        processImage(image)
+    }
+    
+    func processImage(_ image: UIImage) {
+//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
+//        stillImageFilter.blurRadiusInPixels = 4.0
+//        let Tesseractimage = stillImageFilter.image(byFilteringImage: image)!
+        
+        tesseract.image = image
+        
+        print()
+        
+        print(tesseract.rect)
+ 
+//      tesseract.rect = self.preView.bounds
+        
         tesseract.recognize()
 
-        print(tesseract.rect)
-        print(tesseract.recognizedText ?? "")
-
+        print(tesseract.recognizedText ?? "Error")
     }
+    
+    func photoOutput(_ output: AVCapturePhotoOutput,
+                     willBeginCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings)
+    {
+        print("Just about to take a photo.")
+        // get device orientation on capture
+        let deviceOrientationOnCapture = UIDevice.current.orientation
+        print("Device orientation: \(deviceOrientationOnCapture.rawValue)")
+    }
+    
     
     func photoOutput(_ captureOutput: AVCapturePhotoOutput,
                      didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings,
@@ -170,22 +217,16 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         return false // return true if you need to interrupt tesseract before it finishes
     }
     
-    func preprocessedImage(for tesseract: G8Tesseract, sourceImage: UIImage) -> UIImage? {
-        // sourceImage is the same image you sent to Tesseract above
-        print(#function)
-        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
-        stillImageFilter.blurRadiusInPixels = 4
-        let filteredImage = stillImageFilter.image(byFilteringImage: sourceImage)
-
-        return filteredImage
-    }
-
+//    func preprocessedImage(for tesseract: G8Tesseract, sourceImage: UIImage) -> UIImage? {
+//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
+//        stillImageFilter.blurRadiusInPixels = 4
+//        let filteredImage = stillImageFilter.image(byFilteringImage: sourceImage)
+//
+//        return filteredImage
+//    }
 }
 
-
-
 class Draw: UIView {
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
@@ -206,5 +247,5 @@ class Draw: UIView {
         bpath.stroke()
         
     }
-    
 }
+

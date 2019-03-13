@@ -11,5 +11,6 @@
 	* https://gist.github.com/tad-iizuka/fc35bc7835920c0b8b84e316f83e3a40
 	* https://medium.com/@rizwanm/https-medium-com-rizwanm-swift-camera-part-1-c38b8b773b2
 4. Image Preprocessing
-    * 
+    * https://github.com/BradLarson/GPUImage
+    * https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/image-size-and-resolution/
 

@@ -19,7 +19,7 @@ class DefinitionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let word = "track"
+        let word = "random"
         let url = URL(string: "http://www.dictionary.com/browse/" + word)!
         
         let webScrapper = WebScrapper.shared
@@ -27,11 +27,19 @@ class DefinitionViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             guard let data = data else { return }
             let finalData = String(data: data, encoding: .utf8)!
-            webScrapper.analyze(finalData) { (score) in
-                self.webData = score
-                self.tableView.reloadData()
-
+            guard let path = response?.url?.lastPathComponent else { return }
+            print(path)
+            if path == "misspelling" {
+                print("Misspelling")
+            } else if path == word {
+                webScrapper.analyze(finalData, misspelled: false) { (score) in
+                    self.webData = score
+                    self.tableView.reloadData()
+    
+                }
             }
+ 
+
         }
         
         task.resume()
