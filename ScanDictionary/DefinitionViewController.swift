@@ -19,30 +19,34 @@ class DefinitionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let word = "random"
+        let word = "word"
         let url = URL(string: "http://www.dictionary.com/browse/" + word)!
         
         let webScrapper = WebScrapper.shared
         self.title = word
-        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+        
+        URLSession.shared.dataTask(with: url) {(data, response, error) in
             guard let data = data else { return }
             let finalData = String(data: data, encoding: .utf8)!
             guard let path = response?.url?.lastPathComponent else { return }
-            print(path)
-            if path == "misspelling" {
-                print("Misspelling")
-            } else if path == word {
-                webScrapper.analyze(finalData, misspelled: false) { (score) in
+            
+            if path == word {
+                webScrapper.analyze(finalData) { (score) in
                     self.webData = score
                     self.tableView.reloadData()
-    
                 }
             }
- 
-
-        }
-        
-        task.resume()
+            else if path == "misspelling" {
+            print("Misspelling")
+            webScrapper.getSuggestion(finalData) { (suggestion) in
+                print(suggestion)
+//                Present Error to user with suggestion
+                }
+            } else if path == "noresult" {
+                print("No Result")
+//                Present Error to user
+            }
+        }.resume()
     }
     
     override func viewDidAppear(_ animated: Bool) {

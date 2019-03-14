@@ -1,20 +1,24 @@
 import * as cheerio from 'cheerio'
 
 export class Analyzer {
-  static analyze(phrase, err) {
+  static analyze(phrase) {
 
 
-    if (typeof nativeLog === 'function') {
-      nativeLog('Analyzing')
-    }
-    nativeLog(err)
+    if (typeof nativeLog === 'function') { nativeLog('Analyzing') }
     const result = Analyzer.getDefinitions(phrase)
-    nativeLog('**********DONE**********')
     return result;
-    // return JSON.stringify(result);
+
+   
+      
+    // nativeLog('**********DONE**********')
 
   }
-
+  static getSuggestion(html) {
+    nativeLog("Getting Suggestion")
+    const $ = cheerio.load(html);
+    const suggestion = $('.e19m0k9k1').first().text()
+    return suggestion;
+  }
 
   static getDefinitionList($, elem) {
     const definitionListData = $(elem).find('.e1q3nk1v3');
@@ -81,8 +85,8 @@ export class Analyzer {
         });
       }
     });
-
-
     return word;
   }
+
+  
 };
