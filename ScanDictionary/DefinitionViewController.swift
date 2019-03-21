@@ -19,7 +19,7 @@ class DefinitionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let word = "word"
+        let word = "random"
         let url = URL(string: "http://www.dictionary.com/browse/" + word)!
         
         let webScrapper = WebScrapper.shared
@@ -53,8 +53,6 @@ class DefinitionViewController: UIViewController {
         super.viewDidAppear(animated)
         tableView.reloadData()
     }
-    
-
 }
 
 extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {

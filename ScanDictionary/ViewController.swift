@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  ScanDictionary
+//  ScanDictionaryc 
 //
 //  Created by Matthew Shober on 2/4/19.
 //  Copyright © 2019 Matthew Shober. All rights reserved.
@@ -52,7 +52,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
     //      Request Authorization
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized: // The user has previously granted access to the camera.
-            print("Authorized")
+            print("Authorized:")
             
         case .notDetermined: // The user has not yet been asked for camera access.
             AVCaptureDevice.requestAccess(for: .video) { granted in
@@ -70,7 +70,6 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         guard let device = AVCaptureDevice.default(for: .video) else {
             print("No Camera")
 //          Disable button
-            
             return
         }
         self.captureDevice = device
@@ -83,6 +82,9 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
         self.previewLayer?.frame = self.preView.bounds
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        print("Bounds")
+        print(self.preView.bounds)
+        print(self.previewLayer!.bounds)
         self.previewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
         
         self.preView.layer.addSublayer(self.previewLayer!)
