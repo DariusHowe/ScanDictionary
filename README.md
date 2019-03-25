@@ -6,8 +6,6 @@
     3. Select "Import Apple ID and Code Signing Assets"
     4. Select mshober.developerprofile and enter the password
 
-
-
 ### Resources
 1. Tesseract OCR
     * https://www.raywenderlich.com/306-tesseract-ocr-tutorial-for-ios
@@ -22,3 +20,9 @@
     * https://github.com/BradLarson/GPUImage
     * https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/image-size-and-resolution/
 
+
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
