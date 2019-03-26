@@ -13,18 +13,29 @@ import Photos
 import GPUImage
 
 class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptureDelegate {
-
+    
+    /* Picker */
+    var pickerData = ["eastsides", "asdasdasd", "random", "work"]
+    var currentPickerIndex = 0
+    @IBOutlet weak var pickerView: UIPickerView!
+    
+    /* Camera & Preview */
     private let captureSession = AVCaptureSession()
     private let capturePhotoOutput = AVCapturePhotoOutput()
-    
-    var previewLayer: AVCaptureVideoPreviewLayer?
     @objc var captureDevice: AVCaptureDevice?
 
+    var previewLayer: AVCaptureVideoPreviewLayer?
     @IBOutlet var preView: UIView!
+    private var capturePhoto = true // used for testing - will be removed
+
+    
+    /* Views */
+    var scope: Draw!
+    var imageView: UIImageView!
 
     let tesseract = G8Tesseract(language:"eng")!
     
-    private var capturePhoto = true
+    let webScrapper = WebScrapperHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,13 +44,9 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
 //        let synth = AVSpeechSynthesizer()
 //        synth.speak(utterance)
         
-
 //        if let tesseract = G8Tesseract(language: "eng+fra") {
-//
 //            tesseract.engineMode = .tesseractCubeCombined
-//
 //            tesseract.pageSegmentationMode = .auto
-//
 //        }
         
 //      Initialize Tesseract
@@ -47,9 +54,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         tesseract.delegate = self
         tesseract.charWhitelist = "-_(){}[]=%.,?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890/"
 
-        
-        print(tesseract.isEngineConfigured)
-    //      Request Authorization
+        /* Request Authorization */
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized: // The user has previously granted access to the camera.
             print("Authorized:")
@@ -66,35 +71,37 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
             return
         }
         
+        /* Camera */
         self.captureSession.sessionPreset = .photo
-        guard let device = AVCaptureDevice.default(for: .video) else {
+        if let device = AVCaptureDevice.default(for: .video) {
+            self.captureDevice = device
+        } else {
             print("No Camera")
-//          Disable button
             return
         }
-        self.captureDevice = device
+        
         let input = try! AVCaptureDeviceInput(device: self.captureDevice!)
         self.captureSession.addInput(input)
        
-        
         self.captureSession.addOutput(self.capturePhotoOutput)
         capturePhotoOutput.connection(with: AVFoundation.AVMediaType.video)!.videoOrientation = .portrait
+        
+        /* Set up preview */
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
         self.previewLayer?.frame = self.preView.bounds
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        print("Bounds")
-        print(self.preView.bounds)
-        print(self.previewLayer!.bounds)
         self.previewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-        
         self.preView.layer.addSublayer(self.previewLayer!)
+        
         self.captureSession.startRunning()
     }
+
     
-    var scope: Draw!
-    var imageView: UIImageView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
         
         DispatchQueue.main.async {
             let bounds = self.preView.bounds
@@ -107,7 +114,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
                 origin: origin,
                 size: CGSize(width: width, height: height)))
             
-            //      Add the view to the view hierarchy so that it shows up on screen
+            /* Add the view to the view hierarchy so that it shows up on screen */
             self.preView.addSubview(self.scope)
             print("Bounds for scope: \(self.scope.bounds)")
         }
@@ -201,6 +208,74 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
     }
     
     
+    @IBAction func search(_ sender: Any) {
+        let word = pickerData[currentPickerIndex]
+        search(for: word)
+    }
+    
+    private func search(for word: String) {
+        print(#function, "for", word)
+        webScrapper.getDefinition(for: word) { (result) in
+            guard let word = result as? Word? else {
+                self.searchHelper(result)
+                return
+            }
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let definitionController = storyboard.instantiateViewController(withIdentifier: "DefinitionViewController") as! DefinitionViewController
+            
+            definitionController.word = word
+            DispatchQueue.main.async {
+                print("PRESENTING")
+                self.present(definitionController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    /* Handles misspelled words and no results */
+    private func searchHelper(_ result: Any?) {
+        print(#function)
+        print("**************")
+        DispatchQueue.main.async {
+            var title: String?
+            var message: String?
+            var alertController: UIAlertController!
+            if let suggestion = result as! String? {
+                title = "Misspelled Word"
+                message = "Did you mean \(suggestion)"
+                alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alertController.addAction(self.yesAction(for: suggestion))
+                alertController.addAction(self.noAction())
+            } else if result == nil {
+                title = "No Result"
+                alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alertController.addAction(self.retryAction())
+            }
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    private func yesAction(for suggestion: String) -> UIAlertAction {
+        return UIAlertAction(title: "Yes", style: .default, handler: { (result) in
+            print("SEARCHING")
+            self.search(for: suggestion)
+        })
+    }
+    
+    private func noAction() -> UIAlertAction {
+        return UIAlertAction(title: "No", style: .cancel, handler: { (result) in
+            self.pickerData.remove(at: self.currentPickerIndex)
+            self.pickerView.reloadAllComponents()
+        })
+    }
+    
+    private func retryAction() -> UIAlertAction {
+        return UIAlertAction(title: "Retry", style: .default, handler: { (result) in
+            self.pickerData.remove(at: self.currentPickerIndex)
+            self.pickerView.reloadAllComponents()
+        })
+    }
+    
     func photoOutput(_ captureOutput: AVCapturePhotoOutput,
                      didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings,
                      error: Error?) {
@@ -228,11 +303,42 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
 //    }
 }
 
+
+extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    
+    
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+
+    // The data to return fopr the row and component (column) that's being passed in
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerData[row]
+    }
+    
+    // Capture the picker view selection
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        currentPickerIndex = row
+        print("currentPickerIndex")
+        print(currentPickerIndex)
+        // This method is triggered whenever the user makes a change to the picker selection.
+        // The parameter named row and component represents what was selected.
+    }
+}
+
+
+
+
+
 class Draw: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
-
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -15,43 +15,20 @@ class DefinitionViewController: UIViewController {
     // This is the size of our header sections that we will use later on.
     let SectionHeaderHeight: CGFloat = 25
     
-    var webData: Word?
+    var word: Word? {
+        didSet {
+//            self.title = word?.name
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let word = "random"
-        let url = URL(string: "http://www.dictionary.com/browse/" + word)!
-        
-        let webScrapper = WebScrapper.shared
-        self.title = word
-        
-        URLSession.shared.dataTask(with: url) {(data, response, error) in
-            guard let data = data else { return }
-            let finalData = String(data: data, encoding: .utf8)!
-            guard let path = response?.url?.lastPathComponent else { return }
-            
-            if path == word {
-                webScrapper.analyze(finalData) { (score) in
-                    self.webData = score
-                    self.tableView.reloadData()
-                }
-            }
-            else if path == "misspelling" {
-            print("Misspelling")
-            webScrapper.getSuggestion(finalData) { (suggestion) in
-                print(suggestion)
-//                Present Error to user with suggestion
-                }
-            } else if path == "noresult" {
-                print("No Result")
-//                Present Error to user
-            }
-        }.resume()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.reloadData()
+//        tableView.reloadData()
     }
 }
 
@@ -60,8 +37,8 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
     // As long as `total` is the last case in our TableSection enum,
     // this method will always be dynamically correct no mater how many table sections we add or remove.
     func numberOfSections(in tableView: UITableView) -> Int {
-        guard let webData = webData else { return 0 }
-        let dl = webData.definitionLists
+        guard let word = word else { return 0 }
+        let dl = word.definitionLists
 
         return dl.count
     }
@@ -69,7 +46,7 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Using Swift's optional lookup we first check if there is a valid section of table.
         // Then we check that for the section there is data that goes with.
-        if let definitions = webData?.definitionLists[section].definitions {
+        if let definitions = word?.definitionLists[section].definitions {
             return definitions.count
         }
         return 0
@@ -87,8 +64,8 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.black
 
-        guard let webData = webData else { return nil }
-        let category = webData.definitionLists[section].category
+        guard let word = word else { return nil }
+        let category = word.definitionLists[section].category
 
         label.text = category
         
@@ -100,8 +77,8 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DefinitionViewCell
         
         
-        print("Setting section \(indexPath.section), row \(indexPath.row)")
-        if let definition = webData?.definitionLists[indexPath.section].definitions[indexPath.row] {
+//        print("Setting section \(indexPath.section), row \(indexPath.row)")
+        if let definition = word?.definitionLists[indexPath.section].definitions[indexPath.row] {
             
             let description = NSAttributedString(string: definition.description)
             
