@@ -189,9 +189,7 @@ class WebScrapperHelper {
                     result(word)
                 }
             }
-
         }.resume()
-        
     }
 }
 

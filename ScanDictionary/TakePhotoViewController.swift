@@ -10,6 +10,7 @@ import UIKit
 import TesseractOCR
 
 class TakePhotoViewController: UIViewController {
+    @IBOutlet weak var progessView: ProgressView!
     
     var pickerData = ["Item1", "asdasdasd", "assdffdfgugyugnbuib", "work"]
     var currentPickerIndex = 0
@@ -70,12 +71,12 @@ class TakePhotoViewController: UIViewController {
             DispatchQueue.main.async {
                 print(#function)
 
+                print(self.tesseract.progress)
                 self.imageView.image = image
+                self.processImage(image)
 //                Tesseract Process
             }
-            
         }
-        
     }
     
     func crop(_ image: CIImage, within view: ScopeView, previewSize: CGSize) -> UIImage? {
@@ -104,7 +105,39 @@ class TakePhotoViewController: UIViewController {
 }
 
 extension TakePhotoViewController: G8TesseractDelegate {
+    func processImage(_ image: UIImage) {
+        //        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
+        //        stillImageFilter.blurRadiusInPixels = 4.0
+        //        let Tesseractimage = stillImageFilter.image(byFilteringImage: image)!
+        tesseract.image = image
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.tesseract.recognize()
+            print(self.tesseract.recognizedText ?? "Error")
+            print()
+            DispatchQueue.main.async {
+                self.progessView.setProgress(progress: self.tesseract.progress)
+            }
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
+                self.progessView.setProgress(progress: 0)
+                self.imageView.image = nil
+            })
+        }
+    }
     
+    
+    func progressImageRecognition(for tesseract: G8Tesseract) {
+        DispatchQueue.main.async {
+            self.progessView.setProgress(progress: tesseract.progress)
+        }
+       
+        print("Recognition Process \(tesseract.progress) %")
+        
+    }
+    
+    func shouldCancelImageRecognitionForTesseract(tesseract: G8Tesseract!) -> Bool {
+        return false // return true if you need to interrupt tesseract before it finishes
+    }
 }
 
 /* Functions specific to searching for words */
@@ -117,7 +150,6 @@ extension TakePhotoViewController {
     private func search(for word: String) {
         print(#function, "for", word)
         webScrapper.getDefinition(for: word) { (result) in
-            print(result)
             guard let word = result as? Word else {
                 self.searchHelper(result)
                 return
@@ -127,7 +159,6 @@ extension TakePhotoViewController {
             
             definitionController.word = word
             DispatchQueue.main.async {
-                print("PRESENTING")
                 self.present(definitionController, animated: true, completion: nil)
             }
         }
@@ -135,8 +166,6 @@ extension TakePhotoViewController {
     
     /* Handles misspelled words and no results */
     private func searchHelper(_ result: Any?) {
-        print(#function)
-        print("**************")
         DispatchQueue.main.async {
             var title: String?
             var message: String?

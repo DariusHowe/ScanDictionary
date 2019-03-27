@@ -19,6 +19,7 @@
 		759008C32249CD81008BB244 /* ScopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759008C22249CD81008BB244 /* ScopeView.swift */; };
 		759008C6224A8E37008BB244 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759008C5224A8E37008BB244 /* CameraPreview.swift */; };
 		759008CA224AB6E4008BB244 /* TakePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759008C9224AB6E4008BB244 /* TakePhotoViewController.swift */; };
+		759008CE224BB1DD008BB244 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759008CD224BB1DD008BB244 /* ProgressView.swift */; };
 		75978C6B220885EC007DA3F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6A220885EC007DA3F2 /* AppDelegate.swift */; };
 		75978C6D220885EC007DA3F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6C220885EC007DA3F2 /* ViewController.swift */; };
 		75978C70220885EC007DA3F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C6E220885EC007DA3F2 /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 		759008C22249CD81008BB244 /* ScopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeView.swift; sourceTree = "<group>"; };
 		759008C5224A8E37008BB244 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		759008C9224AB6E4008BB244 /* TakePhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoViewController.swift; sourceTree = "<group>"; };
+		759008CD224BB1DD008BB244 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		75978C67220885EC007DA3F2 /* ScanDictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScanDictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75978C6A220885EC007DA3F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75978C6C220885EC007DA3F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			children = (
 				759008C22249CD81008BB244 /* ScopeView.swift */,
 				759008C5224A8E37008BB244 /* CameraPreview.swift */,
+				759008CD224BB1DD008BB244 /* ProgressView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				75454A6D221D9C4000099DAC /* DefinitionViewController.swift in Sources */,
 				75978C6D220885EC007DA3F2 /* ViewController.swift in Sources */,
 				75978C6B220885EC007DA3F2 /* AppDelegate.swift in Sources */,
+				759008CE224BB1DD008BB244 /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

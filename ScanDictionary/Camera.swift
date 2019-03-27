@@ -37,7 +37,10 @@ class Camera: NSObject, AVCapturePhotoCaptureDelegate {
     
     func run() {
         /* The startRunning() method is a blocking call which can take some time, therefore you should perform session setup on a serial queue so that the main queue isn't blocked (which keeps the UI responsive). */
-        self.captureSession.startRunning()
+        let serialQueue = DispatchQueue(label: "serialQueue")
+        serialQueue.sync {
+            self.captureSession.startRunning()
+        }
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {

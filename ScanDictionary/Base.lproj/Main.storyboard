@@ -204,21 +204,9 @@
                         <subviews>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="OaK-xC-LBb" customClass="CameraPreview" customModule="ScanDictionary" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="375" height="500"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vFa-g5-Cc4">
-                                        <rect key="frame" x="128" y="443" width="119" height="42"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <state key="normal" title="Take Photo"/>
-                                        <connections>
-                                            <action selector="capture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bcs-rh-D76"/>
-                                            <action selector="takePhoto:" destination="Sn8-40-0t8" eventType="touchUpInside" id="kj1-46-YSK"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="OaK-xC-LBb" secondAttribute="height" multiplier="3:4" id="rUp-7M-8WF"/>
-                                    <constraint firstItem="vFa-g5-Cc4" firstAttribute="centerX" secondItem="OaK-xC-LBb" secondAttribute="centerX" id="sOU-cO-LwJ"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="96e-Gf-P3k">
@@ -252,14 +240,29 @@
                                     <constraint firstItem="WBD-8R-oAC" firstAttribute="leading" secondItem="w9C-n3-y67" secondAttribute="trailing" constant="10" id="vw7-Sb-6i1"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lol-Mh-oEJ" customClass="ProgressView" customModule="ScanDictionary" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vFa-g5-Cc4">
+                                <rect key="frame" x="128" y="373" width="119" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Take Photo"/>
+                                <connections>
+                                    <action selector="capture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bcs-rh-D76"/>
+                                    <action selector="takePhoto:" destination="Sn8-40-0t8" eventType="touchUpInside" id="kj1-46-YSK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="trailing" secondItem="Tl3-TC-HkA" secondAttribute="trailing" id="2aw-I3-Qgm"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="top" secondItem="OaK-xC-LBb" secondAttribute="top" id="6MF-Wc-EfZ"/>
+                            <constraint firstItem="vFa-g5-Cc4" firstAttribute="centerX" secondItem="Tl3-TC-HkA" secondAttribute="centerX" id="CSd-3p-DUb"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="top" secondItem="OaK-xC-LBb" secondAttribute="bottom" id="FWu-nQ-BBU"/>
+                            <constraint firstItem="vFa-g5-Cc4" firstAttribute="centerY" secondItem="Tl3-TC-HkA" secondAttribute="centerY" constant="75" id="ML4-fk-ik2"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="trailing" secondItem="OaK-xC-LBb" secondAttribute="trailing" id="VoX-iq-vGQ"/>
-                            <constraint firstItem="96e-Gf-P3k" firstAttribute="top" secondItem="vFa-g5-Cc4" secondAttribute="bottom" constant="15" id="Xlx-Bb-J3n"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="leading" secondItem="OaK-xC-LBb" secondAttribute="leading" id="mmo-yG-P4M"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="bottom" secondItem="Tl3-TC-HkA" secondAttribute="bottom" id="nzp-rb-Pgm"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="leading" secondItem="Tl3-TC-HkA" secondAttribute="leading" id="wVP-OU-p2F"/>
@@ -270,6 +273,7 @@
                     <connections>
                         <outlet property="cameraPreview" destination="OaK-xC-LBb" id="e1W-gV-601"/>
                         <outlet property="pickerView" destination="w9C-n3-y67" id="wNp-ng-Zai"/>
+                        <outlet property="progessView" destination="Lol-Mh-oEJ" id="zpV-3m-cwO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lgo-Gu-tqO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -294,7 +298,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yxM-5F-X1j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318" y="1015"/>
+            <point key="canvasLocation" x="188" y="1013"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="zXq-sm-FmD">
@@ -450,7 +454,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SeV-FE-7Ay" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1231" y="1759"/>
+            <point key="canvasLocation" x="1231" y="1783"/>
         </scene>
         <!--Definition View Controller-->
         <scene sceneID="36b-IG-E4n">
@@ -586,7 +590,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iI4-p2-egx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-658.39999999999998" y="998.95052473763121"/>
+            <point key="canvasLocation" x="-638" y="1014"/>
         </scene>
     </scenes>
     <resources>
