@@ -19,10 +19,3 @@
 4. Image Preprocessing
     * https://github.com/BradLarson/GPUImage
     * https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/image-size-and-resolution/
-
-
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-```
