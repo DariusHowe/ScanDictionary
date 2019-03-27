@@ -22,16 +22,16 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
     /* Camera & Preview */
     private let captureSession = AVCaptureSession()
     private let capturePhotoOutput = AVCapturePhotoOutput()
-    @objc var captureDevice: AVCaptureDevice?
+    var captureDevice: AVCaptureDevice?
 
-    var previewLayer: AVCaptureVideoPreviewLayer?
-    @IBOutlet var preView: UIView!
-    private var capturePhoto = true // used for testing - will be removed
-
-    
     /* Views */
-    var scope: Draw!
+    @IBOutlet var preView: UIView!
+    var scope: ScopeView!
+    let scopeHeight: CGFloat = 0.15 // 15% of parent's height
+    let scopeWidth: CGFloat = 0.75 // 75% of parent's width
     var imageView: UIImageView!
+
+    private var capturePhoto = true // used for testing - will be removed
 
     let tesseract = G8Tesseract(language:"eng")!
     
@@ -44,12 +44,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
 //        let synth = AVSpeechSynthesizer()
 //        synth.speak(utterance)
         
-//        if let tesseract = G8Tesseract(language: "eng+fra") {
-//            tesseract.engineMode = .tesseractCubeCombined
-//            tesseract.pageSegmentationMode = .auto
-//        }
-        
-//      Initialize Tesseract
+        /* Initialize Tesseract */
         tesseract.rect = self.preView.bounds
         tesseract.delegate = self
         tesseract.charWhitelist = "-_(){}[]=%.,?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890/"
@@ -86,14 +81,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         self.captureSession.addOutput(self.capturePhotoOutput)
         capturePhotoOutput.connection(with: AVFoundation.AVMediaType.video)!.videoOrientation = .portrait
         
-        /* Set up preview */
-        self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-        self.previewLayer?.frame = self.preView.bounds
-        self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        self.previewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-        self.preView.layer.addSublayer(self.previewLayer!)
         
-        self.captureSession.startRunning()
     }
 
     
@@ -105,24 +93,79 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
         
         DispatchQueue.main.async {
             let bounds = self.preView.bounds
-
-            let height: CGFloat = 0.15 * bounds.height
-            let width = 0.75 * bounds.width
-            
-            let origin = CGPoint(x: (bounds.maxX / 2) - (width / 2), y: (bounds.maxY / 2) - (height / 2))
-            self.scope = Draw(frame: CGRect(
-                origin: origin,
+            let height: CGFloat = self.scopeHeight * bounds.height
+            let width: CGFloat = self.scopeWidth * bounds.width
+            self.scope = ScopeView(frame: CGRect(
+                origin: CGPoint(x: 0, y: 0),
                 size: CGSize(width: width, height: height)))
+            self.scope.center = self.preView.bounds.center
             
-            /* Add the view to the view hierarchy so that it shows up on screen */
-            self.preView.addSubview(self.scope)
-            print("Bounds for scope: \(self.scope.bounds)")
+            
+            
+            
+            
+            
+            /* Set up preview */
+            let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+            previewLayer.frame = self.preView.bounds
+            
+            previewLayer.videoGravity = AVLayerVideoGravity.resizeAspect
+            previewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+            self.preView.layer.addSublayer(previewLayer)
+            
+            self.captureSession.startRunning()
+            
+
+            
+          
+
+            self.imageView = UIImageView(frame: self.scope.frame)
+//            self.imageView = UIImageView(frame: self.scope.bounds)
+            self.imageView.contentMode = .scaleAspectFit
+
+            self.scope.contentMode = .scaleAspectFit
+            
+            print("*****************")
+            print(self.preView.frame)
+            print(self.imageView.frame)
+            print("*****************")
+            
+            print("*****************")
+            print(self.imageView.frame)
+            print("*****************")
+            
+            
+//            self.scope.addSubview(self.imageView)
+            self.preView.addSubview(self.imageView)
         }
     }
     
+    
+    
+    func processImage(_ image: UIImage) {
+//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
+//        stillImageFilter.blurRadiusInPixels = 4.0
+//        let Tesseractimage = stillImageFilter.image(byFilteringImage: image)!
+        tesseract.image = image
+        tesseract.recognize()
+        print(tesseract.recognizedText ?? "Error")
+    }
+    
+    
+    func progressImageRecognition(for tesseract: G8Tesseract) {
+        print("Recognition Process \(tesseract.progress) %")
+    }
+    
+    func shouldCancelImageRecognitionForTesseract(tesseract: G8Tesseract!) -> Bool {
+        return false // return true if you need to interrupt tesseract before it finishes
+    }
+}
+
+/* Functions specific to the camera */
+extension ViewController {
     @IBAction func capture(_ sender: UIButton) {
         print(#function)
-     
+        
         if capturePhoto {
             let photoSettings = AVCapturePhotoSettings.init(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
             photoSettings.isAutoStillImageStabilizationEnabled = true
@@ -130,84 +173,84 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
             photoSettings.isHighResolutionPhotoEnabled = false
             self.capturePhotoOutput.capturePhoto(with: photoSettings, delegate: self)
             DispatchQueue.main.async {
-//                self.captureSession.stopRunning()
+                //                self.captureSession.stopRunning()
                 sender.setTitle("reset", for: UIControl.State.normal)
-
+                
             }
             capturePhoto = false
             
         } else {
             capturePhoto = true
             sender.setTitle("Take photo", for: UIControl.State.normal)
-//            self.captureSession.startRunning()
-            self.imageView.removeFromSuperview()
-
+            imageView.image = nil
+            
         }
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+    
         
         guard let data = photo.fileDataRepresentation() else { return }
-
+        
         var ci_image = CIImage(data: data)!.oriented(CGImagePropertyOrientation.right)
+        
+        print("CI Image Aspect Ratio: ", (ci_image.extent.width / ci_image.extent.width) * 3, (ci_image.extent.height / ci_image.extent.width) * 3)
         
         let height = ci_image.extent.height
         let width = ci_image.extent.width
-        let newHeight = 0.15 * ci_image.extent.height
-        let newWidth = 0.75 * ci_image.extent.width
+        print("Extent", ci_image.extent)
+        
+        var croppingRect = scope.frame
+        let transform = CGAffineTransform(scaleX: width/preView.bounds.width, y: height/preView.bounds.height)
+
+        croppingRect = croppingRect.applying(transform)
+
+        print("Cropping Rect Aspect Ratio: ", (croppingRect.size.width / croppingRect.size.width) * 3, (croppingRect.size.height / croppingRect.size.width) * 3)
+
+        /* We only want the part of the image that is in the scope */
+        /*
+        let newHeight = scopeHeight * ci_image.extent.height
+        let newWidth = scopeWidth * ci_image.extent.width
         
         let origin = CGPoint(x: (width / 2) - (newWidth / 2), y: (height / 2) - (newHeight / 2)) // centers vertically & horizontally
         let size = CGSize(width: newWidth, height: newHeight)
-        
-        ci_image = ci_image.cropped(to: CGRect(origin: origin, size: size))
-    
-        var image = UIImage(cgImage: CIContext().createCGImage(ci_image, from:ci_image.extent)!)
-        
-        let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
-        luminanceThresholdFilter.threshold = 0.4
-        image = luminanceThresholdFilter.image(byFilteringImage: image)!
-        
-        print("Width: \(image.size.width)\t Height: \(image.size.height)")
+         ci_image = ci_image.cropped(to: CGRect(origin: origin, size: size))
 
-        imageView = UIImageView(image: image)
-        imageView.contentMode = UIView.ContentMode.scaleAspectFill
-        imageView.frame = scope.bounds
+        */
+        print("**************")
+        print(ci_image.extent)
+        print(croppingRect)
+        print("ALL GOOD")
+        print("**************")
+
+        ci_image = ci_image.cropped(to: croppingRect)
+
+        print("CI Image Aspect Ratio: ", (ci_image.extent.width / ci_image.extent.width) * 3, (ci_image.extent.height / ci_image.extent.width) * 3)
+
+        let context = CIContext()
+        let cg_image = context.createCGImage(ci_image, from:ci_image.extent)
+
+        let image = UIImage(cgImage: cg_image!)
+        print("Cropping Rect New Aspect Ratio: ", (image.size.width / image.size.width) * 3, (image.size.height / image.size.width) * 3)
+        print("Image Size:", image.size)
+        print("Scope Size:", scope.bounds.size)
+//        var image = UIImage(cgImage: CIContext().createCGImage(ci_image, from:ci_image.extent)!)
         
+        /* Image pre-processing */
+//        let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
+//        luminanceThresholdFilter.threshold = 0.4
+//        image = luminanceThresholdFilter.image(byFilteringImage: image)!
+    
         DispatchQueue.main.async {
-            self.scope.addSubview(self.imageView)
+            self.imageView.image = image
         }
         
-        processImage(image)
+//        processImage(image)
     }
-    
-    func processImage(_ image: UIImage) {
-//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
-//        stillImageFilter.blurRadiusInPixels = 4.0
-//        let Tesseractimage = stillImageFilter.image(byFilteringImage: image)!
-        
-        tesseract.image = image
-        
-        print()
-        
-        print(tesseract.rect)
- 
-//      tesseract.rect = self.preView.bounds
-        
-        tesseract.recognize()
+}
 
-        print(tesseract.recognizedText ?? "Error")
-    }
-    
-    func photoOutput(_ output: AVCapturePhotoOutput,
-                     willBeginCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings)
-    {
-        print("Just about to take a photo.")
-        // get device orientation on capture
-        let deviceOrientationOnCapture = UIDevice.current.orientation
-        print("Device orientation: \(deviceOrientationOnCapture.rawValue)")
-    }
-    
-    
+/* Functions specific to searching for words */
+extension ViewController {
     @IBAction func search(_ sender: Any) {
         let word = pickerData[currentPickerIndex]
         search(for: word)
@@ -257,7 +300,6 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
     
     private func yesAction(for suggestion: String) -> UIAlertAction {
         return UIAlertAction(title: "Yes", style: .default, handler: { (result) in
-            print("SEARCHING")
             self.search(for: suggestion)
         })
     }
@@ -275,38 +317,8 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
             self.pickerView.reloadAllComponents()
         })
     }
-    
-    func photoOutput(_ captureOutput: AVCapturePhotoOutput,
-                     didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings,
-                     error: Error?) {
-        print(#function)
-        guard error == nil else {
-            print("Error in capture process: \(String(describing: error))")
-            return
-        }
-    }
-    
-    func progressImageRecognition(for tesseract: G8Tesseract) {
-        print("Recognition Process \(tesseract.progress) %")
-    }
-    
-    func shouldCancelImageRecognitionForTesseract(tesseract: G8Tesseract!) -> Bool {
-        return false // return true if you need to interrupt tesseract before it finishes
-    }
-    
-//    func preprocessedImage(for tesseract: G8Tesseract, sourceImage: UIImage) -> UIImage? {
-//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
-//        stillImageFilter.blurRadiusInPixels = 4
-//        let filteredImage = stillImageFilter.image(byFilteringImage: sourceImage)
-//
-//        return filteredImage
-//    }
 }
-
-
 extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    
     
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -324,10 +336,7 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     // Capture the picker view selection
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         currentPickerIndex = row
-        print("currentPickerIndex")
-        print(currentPickerIndex)
         // This method is triggered whenever the user makes a change to the picker selection.
-        // The parameter named row and component represents what was selected.
     }
 }
 
@@ -335,25 +344,9 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
 
 
-class Draw: UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = UIColor.clear
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-      
-        let color: UIColor = UIColor.black
-        
-        let bpath:UIBezierPath = UIBezierPath(rect: rect)
-        
-        color.set()
-        bpath.stroke()
-        
-    }
+
+
+extension CGRect {
+    var center: CGPoint { return CGPoint(x: midX, y: midY) }
 }
 
