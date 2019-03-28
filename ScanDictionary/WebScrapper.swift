@@ -44,12 +44,7 @@ class WebScrapper: NSObject {
      - score: The sentiment score
      */
     
-    
-    
-    
-    
-    
-    func analyze(_ html: String, completion: @escaping (_ res: Word) -> Void) {
+    func analyze(_ html: String, for word: String, completion: @escaping (_ res: Word) -> Void) {
         // Run this asynchronously in the background
         DispatchQueue.global(qos: .userInitiated).async {
 //            var score: NSDictionary = [:]
@@ -61,11 +56,12 @@ class WebScrapper: NSObject {
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
             // In Objective-C you can actually write `context[@"analyze"]` but unfortunately that's
             // not possible in Swift yet.
-            if let result = jsAnalyzer?.objectForKeyedSubscript("analyze").call(withArguments: [html]) {
+            if let result = jsAnalyzer?.objectForKeyedSubscript("analyze").call(withArguments: [html, word]) {
 
                 let serialData = try! JSONSerialization.data(withJSONObject: result.toObject(), options: .prettyPrinted)
                 let decoder = JSONDecoder()
                 let word = try! decoder.decode(Word.self, from: serialData)
+            
                 res = word
             }
             
@@ -91,6 +87,31 @@ class WebScrapper: NSObject {
         }
     }
     
+    func getDefinition(for word: String, result: @escaping (Any?) -> ()) {
+        print(#function)
+        let word = word
+        let url = URL(string: "http://www.dictionary.com/browse/" + word)!
+        
+        let webScrapper = WebScrapper.shared
+        URLSession.shared.dataTask(with: url) {(data, response, error) in
+            guard let data = data else { return }
+            let finalData = String(data: data, encoding: .utf8)!
+            guard let path = response?.url?.lastPathComponent else { return }
+            if path == "misspelling" {
+                webScrapper.getSuggestion(finalData) { (suggestion) in
+                    result(suggestion)
+                }
+            } else if path == "noresult" {
+                result(nil)
+            } else {
+                // Searching for the word "eastsites" gives a url with a path of "east-side" - Using "else if path == word" will miss certain words
+                webScrapper.analyze(finalData, for: path) { (word) in
+                    result(word)
+                }
+            }
+            }.resume()
+    }
+    
 }
 
 class Word: Codable {
@@ -110,103 +131,103 @@ struct Definition: Codable {
     let label: String?
 }
 
-
-class WebScrapperHelper {
-    func getDefinition(for word: String, result: @escaping (Word?, UIAlertController?) -> ()) {
-        print(#function)
-        let word = word
-        print("1")
-        let url = URL(string: "http://www.dictionary.com/browse/" + word)!
-        
-        let webScrapper = WebScrapper.shared
-        print("1")
-        URLSession.shared.dataTask(with: url) {(data, response, error) in
-            guard let data = data else { return }
-            let finalData = String(data: data, encoding: .utf8)!
-            guard let path = response?.url?.lastPathComponent else { return }
-            
-            if path == word {
-                webScrapper.analyze(finalData) { (word) in
-                    result(word, nil)
-                }
-            }
-            else if path == "misspelling" {
-                print("Misspelling")
-                webScrapper.getSuggestion(finalData) { (suggestion) in
-                    print(suggestion)
-                    let alert = UIAlertController(title: "Misselling", message: "Did you mean \(suggestion)",         preferredStyle: UIAlertController.Style.alert)
-                    
-                    alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: nil))
-                    alert.addAction(UIAlertAction(title: "Yes",
-                                                  style: UIAlertAction.Style.default,
-                                                  handler: nil))
-                    
-                    result(nil, alert)
-                }
-            } else if path == "noresult" {
-                print("No Result")
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "No Result", message: nil,         preferredStyle: UIAlertController.Style.alert)
-                    
-                    let retryAction = UIAlertAction(title: "Retry", style: .default, handler: nil)
-                    alert.addAction(retryAction)
-                    result(nil, alert)
-
-                }
-            }
-        }.resume()
-    }
-    
-    
-    
-    
-    
-    
-    func getDefinition(for word: String, result: @escaping (Any?) -> ()) {
-        print(#function)
-        let word = word
-        let url = URL(string: "http://www.dictionary.com/browse/" + word)!
-        
-        let webScrapper = WebScrapper.shared
-        URLSession.shared.dataTask(with: url) {(data, response, error) in
-            guard let data = data else { return }
-            let finalData = String(data: data, encoding: .utf8)!
-            guard let path = response?.url?.lastPathComponent else { return }
+//
+//class WebScrapperHelper {
+//    func getDefinition(for word: String, result: @escaping (Word?, UIAlertController?) -> ()) {
+//        print(#function)
+//        let word = word
+//        print("1")
+//        let url = URL(string: "http://www.dictionary.com/browse/" + word)!
+//        
+//        let webScrapper = WebScrapper.shared
+//        print("1")
+//        URLSession.shared.dataTask(with: url) {(data, response, error) in
+//            guard let data = data else { return }
+//            let finalData = String(data: data, encoding: .utf8)!
+//            guard let path = response?.url?.lastPathComponent else { return }
+//            
 //            if path == word {
+//                webScrapper.analyze(finalData) { (word) in
+//                    result(word, nil)
+//                }
+//            }
+//            else if path == "misspelling" {
+//                print("Misspelling")
+//                webScrapper.getSuggestion(finalData) { (suggestion) in
+//                    print(suggestion)
+//                    let alert = UIAlertController(title: "Misselling", message: "Did you mean \(suggestion)",         preferredStyle: UIAlertController.Style.alert)
+//                    
+//                    alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: nil))
+//                    alert.addAction(UIAlertAction(title: "Yes",
+//                                                  style: UIAlertAction.Style.default,
+//                                                  handler: nil))
+//                    
+//                    result(nil, alert)
+//                }
+//            } else if path == "noresult" {
+//                print("No Result")
+//                DispatchQueue.main.async {
+//                    let alert = UIAlertController(title: "No Result", message: nil,         preferredStyle: UIAlertController.Style.alert)
+//                    
+//                    let retryAction = UIAlertAction(title: "Retry", style: .default, handler: nil)
+//                    alert.addAction(retryAction)
+//                    result(nil, alert)
+//
+//                }
+//            }
+//        }.resume()
+//    }
+//    
+//    
+//    
+//    
+//    
+//    
+//    func getDefinition(for word: String, result: @escaping (Any?) -> ()) {
+//        print(#function)
+//        let word = word
+//        let url = URL(string: "http://www.dictionary.com/browse/" + word)!
+//        
+//        let webScrapper = WebScrapper.shared
+//        URLSession.shared.dataTask(with: url) {(data, response, error) in
+//            guard let data = data else { return }
+//            let finalData = String(data: data, encoding: .utf8)!
+//            guard let path = response?.url?.lastPathComponent else { return }
+////            if path == word {
+////                webScrapper.analyze(finalData) { (word) in
+////                    result(word)
+////                }
+////            }
+//            if path == "misspelling" {
+//                webScrapper.getSuggestion(finalData) { (suggestion) in
+//                    result(suggestion)
+//                }
+//            } else if path == "noresult" {
+//                result(nil)
+//            } else {
+//                // Searching for the word "eastsites" gives a url with a path of "east-side" - Using "else if path == word" will miss certain words
 //                webScrapper.analyze(finalData) { (word) in
 //                    result(word)
 //                }
 //            }
-            if path == "misspelling" {
-                webScrapper.getSuggestion(finalData) { (suggestion) in
-                    result(suggestion)
-                }
-            } else if path == "noresult" {
-                result(nil)
-            } else {
-                // Searching for the word "eastsites" gives a url with a path of "east-side" - Using "else if path == word" will miss certain words
-                webScrapper.analyze(finalData) { (word) in
-                    result(word)
-                }
-            }
-        }.resume()
-    }
-}
-
-func misspellingAlert(with suggestion: String, hander: @escaping (UIAlertAction) -> Void) -> UIAlertController {
-    let alert = UIAlertController(title: "Misselling", message: "Did you mean \(suggestion)",         preferredStyle: UIAlertController.Style.alert)
-    
-    alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: hander))
-    alert.addAction(UIAlertAction(title: "Yes",
-                                  style: UIAlertAction.Style.default,
-                                  handler: hander))
-    
-    return alert
-}
-
-
-enum AlertActionType {
-    case yes
-    case no
-}
+//        }.resume()
+//    }
+//}
+//
+//func misspellingAlert(with suggestion: String, hander: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+//    let alert = UIAlertController(title: "Misselling", message: "Did you mean \(suggestion)",         preferredStyle: UIAlertController.Style.alert)
+//    
+//    alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: hander))
+//    alert.addAction(UIAlertAction(title: "Yes",
+//                                  style: UIAlertAction.Style.default,
+//                                  handler: hander))
+//    
+//    return alert
+//}
+//
+//
+//enum AlertActionType {
+//    case yes
+//    case no
+//}
 

@@ -6,13 +6,12 @@
 //  Copyright © 2019 Matthew Shober. All rights reserved.
 //
 import UIKit
+import AVFoundation
 
 class DefinitionViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
 
-    
-    // This is the size of our header sections that we will use later on.
     let SectionHeaderHeight: CGFloat = 25
     
     var word: Word? {
@@ -20,7 +19,8 @@ class DefinitionViewController: UIViewController {
 //            self.title = word?.name
         }
     }
-    
+    let synth = AVSpeechSynthesizer()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +29,11 @@ class DefinitionViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        tableView.reloadData()
+    }
+    
+    func speak(word: String) {
+        let utterance = AVSpeechUtterance(string: "hello world!")
+        synth.speak(utterance)
     }
 }
 

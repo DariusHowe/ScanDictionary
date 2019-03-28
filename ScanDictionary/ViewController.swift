@@ -35,7 +35,7 @@ class ViewController: UIViewController, G8TesseractDelegate, AVCapturePhotoCaptu
 
     let tesseract = G8Tesseract(language:"eng")!
     
-    let webScrapper = WebScrapperHelper()
+    let webScrapper = WebScrapper.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()

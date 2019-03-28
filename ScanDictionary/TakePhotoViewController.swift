@@ -13,6 +13,7 @@ class TakePhotoViewController: UIViewController {
     @IBOutlet weak var progessView: ProgressView!
     
     var pickerData = ["Item1", "asdasdasd", "assdffdfgugyugnbuib", "work"]
+    
     var currentPickerIndex = 0
     @IBOutlet weak var pickerView: UIPickerView!
     
@@ -24,9 +25,8 @@ class TakePhotoViewController: UIViewController {
     var scope: ScopeView!
     
     var imageView: UIImageView!
-    let webScrapper = WebScrapperHelper()
+    let webScrapper = WebScrapper.shared
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.pickerView.delegate = self
@@ -34,7 +34,6 @@ class TakePhotoViewController: UIViewController {
         tesseract.rect = self.cameraPreview.bounds
         tesseract.delegate = self
         tesseract.charWhitelist = "-_(){}[]=%.,?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890/"
-//
 //        cameraPreview.addSubview(imageView)
     }
     
@@ -158,6 +157,7 @@ extension TakePhotoViewController {
             let definitionController = storyboard.instantiateViewController(withIdentifier: "DefinitionViewController") as! DefinitionViewController
             
             definitionController.word = word
+            DefinitionStorage.store(word)
             DispatchQueue.main.async {
                 self.present(definitionController, animated: true, completion: nil)
             }
