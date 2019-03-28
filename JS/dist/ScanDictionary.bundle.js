@@ -18527,20 +18527,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 class Analyzer {
-  static analyze(phrase) {
+  static analyze(html, word) {
 
 
     if (typeof nativeLog === 'function') { nativeLog('Analyzing') }
-    const result = Analyzer.getDefinitions(phrase)
+    const result = Analyzer.getDefinitions(html, word)
     return result;
-
-   
-      
-    // nativeLog('**********DONE**********')
-
   }
   static getSuggestion(html) {
-    nativeLog("Getting Suggestion")
     const $ = __WEBPACK_IMPORTED_MODULE_0_cheerio__["load"](html);
     const suggestion = $('.e19m0k9k1').first().text()
     return suggestion;
@@ -18551,7 +18545,6 @@ class Analyzer {
     var definitionList = new Object();
 
     const category = $(elem).find('.luna-pos');
-    nativeLog(category.text());
 
     definitionList.category = category.text();
     definitionList.definitions = []
@@ -18570,7 +18563,6 @@ class Analyzer {
       if ($(elem).children().first().hasClass('luna-labset')) {
         const label = $(elem).find('.luna-label').text();
         definition.label = label;
-        nativeLog('\tlabel: ' + label);
       } else {
         const example = $(elem).find('.luna-example').text();
         $(elem).find('.luna-example').remove();
@@ -18578,25 +18570,22 @@ class Analyzer {
 
         var description = $(elem).text()
         definition.description = description;
-        nativeLog('\tDescription: ' + description);
-        nativeLog('\tExample: ' + example);
+ 
       }
     });
 
     return definition;
   }
 
-  static getDefinitions(html) {
+  static getDefinitions(html, name) {
 
     const $ = __WEBPACK_IMPORTED_MODULE_0_cheerio__["load"](html);
     const items = $('.no-collapse').eq(1).prevAll().toArray().reverse();
 
     var word = new Object();
-    word.name = 'test';
+    word.name = name;
     word.definitionLists = [];
-    // nativeLog(JSON.stringify(word));
-
-    nativeLog('number of items: ' + items.length)
+  
     $(items).each((i, elem) => {
       // var definitions = new Object();
       if ($(elem).hasClass('e1hk9ate0')) {
