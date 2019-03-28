@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Drt-Vd-NbT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dGS-C9-iGW">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -405,17 +405,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Navigation Bar" translatesAutoresizingMaskIntoConstraints="NO" id="Igb-hp-drm">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                <rect key="frame" x="-4" y="0.0" width="383" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="zk1-bZ-svs"/>
                                 </constraints>
                             </imageView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="bfJ-LI-UOa">
-                                <rect key="frame" x="0.0" y="60" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="53" width="375" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cS3-bH-1Ys">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="109" width="375" height="509"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="EWW-cX-Gcj">
@@ -432,14 +432,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="bfJ-LI-UOa" firstAttribute="leading" secondItem="821-KR-tyj" secondAttribute="leading" id="49e-Gf-glu"/>
-                            <constraint firstItem="Igb-hp-drm" firstAttribute="leading" secondItem="ecs-L3-Bxq" secondAttribute="leading" id="Aj9-6V-m69"/>
+                            <constraint firstItem="Igb-hp-drm" firstAttribute="leading" secondItem="ecs-L3-Bxq" secondAttribute="leading" constant="-4" id="Aj9-6V-m69"/>
                             <constraint firstItem="cS3-bH-1Ys" firstAttribute="top" secondItem="bfJ-LI-UOa" secondAttribute="bottom" id="FlG-5n-iGl"/>
                             <constraint firstItem="821-KR-tyj" firstAttribute="bottom" secondItem="cS3-bH-1Ys" secondAttribute="bottom" id="HCN-LO-bL5"/>
                             <constraint firstItem="821-KR-tyj" firstAttribute="trailing" secondItem="bfJ-LI-UOa" secondAttribute="trailing" id="LKc-5C-tqX"/>
                             <constraint firstItem="821-KR-tyj" firstAttribute="trailing" secondItem="cS3-bH-1Ys" secondAttribute="trailing" id="OyJ-eO-BUI"/>
                             <constraint firstItem="cS3-bH-1Ys" firstAttribute="leading" secondItem="821-KR-tyj" secondAttribute="leading" id="ZNZ-o2-0FA"/>
-                            <constraint firstItem="bfJ-LI-UOa" firstAttribute="top" secondItem="Igb-hp-drm" secondAttribute="bottom" id="aOI-tl-qwY"/>
-                            <constraint firstAttribute="trailing" secondItem="Igb-hp-drm" secondAttribute="trailing" id="dWW-u0-0bC"/>
+                            <constraint firstItem="bfJ-LI-UOa" firstAttribute="top" secondItem="Igb-hp-drm" secondAttribute="bottom" constant="-7" id="aOI-tl-qwY"/>
+                            <constraint firstAttribute="trailing" secondItem="Igb-hp-drm" secondAttribute="trailing" constant="-4" id="dWW-u0-0bC"/>
                             <constraint firstItem="Igb-hp-drm" firstAttribute="top" secondItem="ecs-L3-Bxq" secondAttribute="top" id="voT-R1-Zit"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="821-KR-tyj"/>
@@ -611,7 +611,7 @@
         <image name="Title" width="329" height="33"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lAg-Uj-WJq"/>
+        <segue reference="aCl-h4-h3T"/>
         <segue reference="AB2-3I-w8T"/>
         <segue reference="X8Q-Rk-DeX"/>
     </inferredMetricsTieBreakers>

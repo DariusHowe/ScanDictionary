@@ -8,6 +8,7 @@
 
 import UIKit
 import TesseractOCR
+import GPUImage
 
 class TakePhotoViewController: UIViewController {
     @IBOutlet weak var progessView: ProgressView!
@@ -64,21 +65,24 @@ class TakePhotoViewController: UIViewController {
         camera.capture { (ci_image) in
             print(#function)
 
-            guard let image = self.crop(ci_image, within: self.scope, previewSize: self.cameraPreview.frame.size) else {
+            guard var image = self.crop(ci_image, within: self.scope, previewSize: self.cameraPreview.frame.size) else {
                 return
             }
+            let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
+            luminanceThresholdFilter.threshold = 0.4
+            image = luminanceThresholdFilter.image(byFilteringImage: image)!
+            
             DispatchQueue.main.async {
                 print(#function)
 
                 print(self.tesseract.progress)
                 self.imageView.image = image
                 self.processImage(image)
-//                Tesseract Process
             }
         }
     }
     
-    func crop(_ image: CIImage, within view: ScopeView, previewSize: CGSize) -> UIImage? {
+    private func crop(_ image: CIImage, within view: ScopeView, previewSize: CGSize) -> UIImage? {
         let imageViewScale = max(image.extent.width / previewSize.width,
                                  image.extent.height / previewSize.height)
         
@@ -105,14 +109,22 @@ class TakePhotoViewController: UIViewController {
 
 extension TakePhotoViewController: G8TesseractDelegate {
     func processImage(_ image: UIImage) {
-        //        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
-        //        stillImageFilter.blurRadiusInPixels = 4.0
-        //        let Tesseractimage = stillImageFilter.image(byFilteringImage: image)!
+//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
+//        stillImageFilter.blurRadiusInPixels = 4.0
+//        let Tesseractimage = stillImageFilter.image(byFilteringImage: image)!
+//        let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
+//        luminanceThresholdFilter.threshold = 0.4
+//        let image = luminanceThresholdFilter.image(byFilteringImage: image)!
         tesseract.image = image
-        
+
+
         DispatchQueue.global(qos: .userInteractive).async {
             self.tesseract.recognize()
-            print(self.tesseract.recognizedText ?? "Error")
+            let text = self.tesseract.recognizedText ?? ""
+            let words = text.components(separatedBy: " ")
+            for word in words {
+                print(word)
+            }
             print()
             DispatchQueue.main.async {
                 self.progessView.setProgress(progress: self.tesseract.progress)
