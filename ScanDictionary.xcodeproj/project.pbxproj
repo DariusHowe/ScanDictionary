@@ -23,7 +23,6 @@
 		759008D0224C1CCE008BB244 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759008CF224C1CCE008BB244 /* HistoryViewController.swift */; };
 		759008D2224CFCF8008BB244 /* DefinitionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759008D1224CFCF8008BB244 /* DefinitionStorage.swift */; };
 		75978C6B220885EC007DA3F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6A220885EC007DA3F2 /* AppDelegate.swift */; };
-		75978C6D220885EC007DA3F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75978C6C220885EC007DA3F2 /* ViewController.swift */; };
 		75978C70220885EC007DA3F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C6E220885EC007DA3F2 /* Main.storyboard */; };
 		75978C72220885ED007DA3F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75978C71220885ED007DA3F2 /* Assets.xcassets */; };
 		75978C75220885ED007DA3F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75978C73220885ED007DA3F2 /* LaunchScreen.storyboard */; };
@@ -49,7 +48,6 @@
 		759008D1224CFCF8008BB244 /* DefinitionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionStorage.swift; sourceTree = "<group>"; };
 		75978C67220885EC007DA3F2 /* ScanDictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScanDictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75978C6A220885EC007DA3F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		75978C6C220885EC007DA3F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		75978C6F220885EC007DA3F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		75978C71220885ED007DA3F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75978C74220885ED007DA3F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -128,7 +126,6 @@
 				756E4D7C2211CE17009F3346 /* ScanDictionary.bundle.js */,
 				75978C6A220885EC007DA3F2 /* AppDelegate.swift */,
 				759008C02249CAE0008BB244 /* Camera.swift */,
-				75978C6C220885EC007DA3F2 /* ViewController.swift */,
 				759008C4224A8DF8008BB244 /* Views */,
 				756E4D7A2211C396009F3346 /* WebScrapper.swift */,
 				759008D1224CFCF8008BB244 /* DefinitionStorage.swift */,
@@ -277,7 +274,6 @@
 				759008CA224AB6E4008BB244 /* TakePhotoViewController.swift in Sources */,
 				759008C6224A8E37008BB244 /* CameraPreview.swift in Sources */,
 				75454A6D221D9C4000099DAC /* DefinitionViewController.swift in Sources */,
-				75978C6D220885EC007DA3F2 /* ViewController.swift in Sources */,
 				75978C6B220885EC007DA3F2 /* AppDelegate.swift in Sources */,
 				759008CE224BB1DD008BB244 /* ProgressView.swift in Sources */,
 			);

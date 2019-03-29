@@ -19,6 +19,7 @@ class DefinitionViewController: UIViewController {
 //            self.title = word?.name
         }
     }
+    
     let synth = AVSpeechSynthesizer()
 
     
