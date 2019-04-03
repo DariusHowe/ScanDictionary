@@ -9,11 +9,12 @@
 import UIKit
 import TesseractOCR
 import GPUImage
+import CoreMotion
 
 class TakePhotoViewController: UIViewController {
     @IBOutlet weak var progessView: ProgressView!
     
-    var pickerData = ["Item1", "asdasdasd", "assdffdfgugyugnbuib", "work"]
+    var pickerData: [String] = []
     
     var currentPickerIndex = 0
     @IBOutlet weak var pickerView: UIPickerView!
@@ -21,6 +22,8 @@ class TakePhotoViewController: UIViewController {
     @IBOutlet var cameraPreview: CameraPreview!
     
     let tesseract = G8Tesseract(language:"eng")!
+    let motionDetector = CMMotionManager()
+    var deviceIsSteady = false;
 
     let camera = Camera()
     var scope: ScopeView!
@@ -38,6 +41,8 @@ class TakePhotoViewController: UIViewController {
 //        cameraPreview.addSubview(imageView)
     }
     
+    var deviceSteadyCount = 0
+    
     override func viewDidAppear(_ animated: Bool) {
         print(#function)
         if camera.captureSession.isRunning == false {
@@ -46,19 +51,40 @@ class TakePhotoViewController: UIViewController {
         }
        
         
-        scope = ScopeView(frame: CGRect(x: 46.875, y: 212.5, width: 281.25, height: 75))
-        
+        scope = ScopeView(frame: CGRect(x: 0, y: 0, width: 250, height: 75))
+        scope.center = cameraPreview.bounds.center
+
         imageView = UIImageView(frame: self.scope.bounds)
 
         self.imageView.contentMode = .scaleAspectFit
         self.scope.contentMode = .scaleAspectFit
-        print("Camera Preview:", cameraPreview.frame)
-        print("Scope View:", scope.frame)
-        print("Image View:", imageView.frame)
         
         scope.addSubview(imageView)
         cameraPreview.addSubview(scope)
 
+        motionDetector.accelerometerUpdateInterval = 0.5
+        startAccelerometer()
+    }
+    
+    func startAccelerometer() {
+        motionDetector.startAccelerometerUpdates(to: OperationQueue.current!) { (data,error)in
+            guard let motion = data else { print(error!); return }
+            let acceleration = sqrt((motion.acceleration.x * motion.acceleration.x) + (motion.acceleration.y * motion.acceleration.y) + (motion.acceleration.z * motion.acceleration.z))
+            
+            if acceleration < 1.02 && acceleration > 0.98 {
+                self.deviceIsSteady = true
+                self.deviceSteadyCount += 1
+            } else {
+                self.deviceIsSteady = false
+                self.deviceSteadyCount = 0
+            }
+            if self.deviceSteadyCount >= 6 {
+                print("device is steady:", self.deviceIsSteady)
+                self.deviceSteadyCount = 0
+                self.takePhoto(false)
+                self.motionDetector.stopAccelerometerUpdates()
+            }
+        }
     }
     
     @IBAction func takePhoto(_ sender: Any) {
@@ -73,10 +99,8 @@ class TakePhotoViewController: UIViewController {
             image = luminanceThresholdFilter.image(byFilteringImage: image)!
             
             DispatchQueue.main.async {
-                print(#function)
-
                 print(self.tesseract.progress)
-                self.imageView.image = image
+//                self.imageView.image = image
                 self.processImage(image)
             }
         }
@@ -105,6 +129,8 @@ class TakePhotoViewController: UIViewController {
 
         return UIImage(cgImage: cgImage)
     }
+    
+    
 }
 
 extension TakePhotoViewController: G8TesseractDelegate {
@@ -120,30 +146,60 @@ extension TakePhotoViewController: G8TesseractDelegate {
 
         DispatchQueue.global(qos: .userInteractive).async {
             self.tesseract.recognize()
-            let text = self.tesseract.recognizedText ?? ""
-            let words = text.components(separatedBy: " ")
-            for word in words {
-                print(word)
+            var iteratorLevel = G8PageIteratorLevel.textline
+            var blocks = self.tesseract.recognizedBlocks(by: iteratorLevel)
+            
+            iteratorLevel = G8PageIteratorLevel.word
+            blocks = self.tesseract.recognizedBlocks(by: iteratorLevel)
+
+            var closestWord: (String, CGFloat)?
+            
+            if let blocks = blocks as? [G8RecognizedBlock] {
+                let center = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size).center
+                for block in blocks {
+                    let distance = center.distance(from: block.boundingBox(atImageOf: image.size).center)
+                    if closestWord == nil {
+                        closestWord = (block.text, distance)
+                    } else if closestWord!.1 > distance {
+                        closestWord = (block.text, distance)
+                    }
+                }
             }
-            print()
+            
             DispatchQueue.main.async {
+//                self.imageView.image = image
+                if let closestWord = closestWord?.0 {
+                    let word = self.removeSpecialCharsFromString(text: closestWord)
+                    guard !self.pickerData.contains(word) else { return }
+
+                    self.pickerData.insert(word, at: 0)
+                }
+                
+//                if !self.pickerData.contains(closestWord!.0) {
+////                    add
+//                }
+                self.pickerView.reloadAllComponents()
                 self.progessView.setProgress(progress: self.tesseract.progress)
             }
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
                 self.progessView.setProgress(progress: 0)
                 self.imageView.image = nil
+                self.startAccelerometer()
             })
         }
     }
     
+    func removeSpecialCharsFromString(text: String) -> String {
+        let okayChars : Set<Character> =
+            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890")
+        return String(text.filter {okayChars.contains($0) })
+//        return String(text.characters.filter {okayChars.contains($0) })
+    }
     
     func progressImageRecognition(for tesseract: G8Tesseract) {
         DispatchQueue.main.async {
             self.progessView.setProgress(progress: tesseract.progress)
         }
-       
-        print("Recognition Process \(tesseract.progress) %")
-        
     }
     
     func shouldCancelImageRecognitionForTesseract(tesseract: G8Tesseract!) -> Bool {
@@ -166,12 +222,14 @@ extension TakePhotoViewController {
                 return
             }
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let definitionController = storyboard.instantiateViewController(withIdentifier: "DefinitionViewController") as! DefinitionViewController
+//            let definitionController = storyboard.instantiateViewController(withIdentifier: "DefinitionViewController") as! DefinitionViewController
+//            tabbar
             
-            definitionController.word = word
+            let tabBar = storyboard.instantiateViewController(withIdentifier: "tabbar") as! TabBarViewController
+            tabBar.word = word
             DefinitionStorage.store(word)
             DispatchQueue.main.async {
-                self.present(definitionController, animated: true, completion: nil)
+                self.present(tabBar, animated: true, completion: nil)
             }
         }
     }
@@ -237,5 +295,14 @@ extension TakePhotoViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         currentPickerIndex = row
         // This method is triggered whenever the user makes a change to the picker selection.
+    }
+}
+
+
+extension CGPoint {
+    func distance(from point: CGPoint) -> CGFloat {
+        let xDist = x - point.x
+        let yDist = y - point.y
+        return CGFloat(sqrt(xDist * xDist + yDist * yDist))
     }
 }

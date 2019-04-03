@@ -22,15 +22,17 @@ class ScopeView: UIView {
     
     override func draw(_ rect: CGRect) {
         
-        let color: UIColor = UIColor.black
+        let path = UIBezierPath()
+        path.move(to: rect.origin)
+        path.addLine(to: CGPoint(x: self.bounds.minX, y: self.bounds.maxY))
+        path.addLine(to: CGPoint(x: self.bounds.maxX, y: self.bounds.maxY))
+        path.addLine(to: CGPoint(x: self.bounds.maxX, y: self.bounds.minY))
+        path.lineWidth = 2
         
-        let bpath:UIBezierPath = UIBezierPath(rect: rect)
-        
+        let color = UIColor(displayP3Red: 7/255.0, green: 210/255.0, blue: 255/255.0, alpha: 1)
         color.set()
-        bpath.stroke()
-    }
-    
-    func centerWithinSuperview() {
         
+        path.stroke()
     }
+
 }

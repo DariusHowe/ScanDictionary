@@ -22,7 +22,7 @@ class ProgressView: UIView {
         
         let rect = CGRect(origin: self.bounds.origin, size: self.frame.size.applying(CGAffineTransform(scaleX: CGFloat(progress)/100, y: 1)))
         
-        let color: UIColor = UIColor.cyan
+        let color = UIColor(displayP3Red: 7/255.0, green: 210/255.0, blue: 255/255.0, alpha: 1)
         let bpath:UIBezierPath = UIBezierPath(rect: rect)
         
         

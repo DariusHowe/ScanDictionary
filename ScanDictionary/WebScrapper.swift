@@ -93,12 +93,16 @@ class WebScrapper: NSObject {
         let url = URL(string: "http://www.dictionary.com/browse/" + word)!
         
         let webScrapper = WebScrapper.shared
-        URLSession.shared.dataTask(with: url) {(data, response, error) in
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else { return }
             let finalData = String(data: data, encoding: .utf8)!
             guard let path = response?.url?.lastPathComponent else { return }
             if path == "misspelling" {
                 webScrapper.getSuggestion(finalData) { (suggestion) in
+                    guard suggestion != "" else {
+                        result(nil)
+                        return
+                    }
                     result(suggestion)
                 }
             } else if path == "noresult" {
@@ -109,7 +113,7 @@ class WebScrapper: NSObject {
                     result(word)
                 }
             }
-            }.resume()
+        }.resume()
     }
     
 }
