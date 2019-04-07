@@ -19,6 +19,17 @@ class WebkitViewController: UIViewController, WKUIDelegate {
         webView.uiDelegate = self
         view = webView
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        self.navigationController?.setNavigationBarHidden(false, animated: true)
+//        super.viewWillAppear(animated)
+//        
+//    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        self.navigationController?.setNavigationBarHidden(true, animated: true)
+//        super.viewWillDisappear(animated)
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         guard word != nil else { return }

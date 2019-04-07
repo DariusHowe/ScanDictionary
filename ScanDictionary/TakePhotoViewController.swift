@@ -43,12 +43,21 @@ class TakePhotoViewController: UIViewController {
     
     var deviceSteadyCount = 0
     
+    override func viewWillDisappear(_ animated: Bool) {
+        print(#function)
+        motionDetector.stopAccelerometerUpdates()
+        super.viewWillDisappear(animated)
+    }
+    
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         print(#function)
         if camera.captureSession.isRunning == false {
             cameraPreview.setupPreview(for: camera.captureSession)
             camera.run()
         }
+        
        
         
         scope = ScopeView(frame: CGRect(x: 0, y: 0, width: 250, height: 75))
@@ -181,7 +190,13 @@ extension TakePhotoViewController: G8TesseractDelegate {
                 self.pickerView.reloadAllComponents()
                 self.progessView.setProgress(progress: self.tesseract.progress)
             }
+           
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
+        
+                if self.navigationController?.visibleViewController == self {
+                    print("VIS")
+
+                }
                 self.progessView.setProgress(progress: 0)
                 self.imageView.image = nil
                 self.startAccelerometer()
@@ -222,14 +237,15 @@ extension TakePhotoViewController {
                 return
             }
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let definitionController = storyboard.instantiateViewController(withIdentifier: "DefinitionViewController") as! DefinitionViewController
-//            tabbar
+
             
             let tabBar = storyboard.instantiateViewController(withIdentifier: "tabbar") as! TabBarViewController
+            
             tabBar.word = word
             DefinitionStorage.store(word)
             DispatchQueue.main.async {
-                self.present(tabBar, animated: true, completion: nil)
+                self.navigationController?.pushViewController(tabBar, animated: true)
+//                self.navigationController?.present(tabBar, animated: true, completion: nil)
             }
         }
     }

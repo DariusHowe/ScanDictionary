@@ -103,12 +103,23 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let word = items[indexPath.row]
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let definitionController = storyboard.instantiateViewController(withIdentifier: "DefinitionViewController") as! DefinitionViewController
+//        let definitionController = storyboard.instantiateViewController(withIdentifier: "DefinitionViewController") as! DefinitionViewController
+//
+//        definitionController.word = DefinitionStorage.retrieve(word)
         
-        definitionController.word = DefinitionStorage.retrieve(word)
+        
+        let tabBar = storyboard.instantiateViewController(withIdentifier: "tabbar") as! TabBarViewController
+        
+        tabBar.word = DefinitionStorage.retrieve(word)
         DispatchQueue.main.async {
-            self.present(definitionController, animated: true, completion: nil)
+            self.navigationController?.pushViewController(tabBar, animated: true)
+            //                self.navigationController?.present(tabBar, animated: true, completion: nil)
         }
+        
+//
+//        DispatchQueue.main.async {
+//            self.present(definitionController, animated: true, completion: nil)
+//        }
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

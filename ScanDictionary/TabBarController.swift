@@ -8,10 +8,17 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class TabBarViewController: UITabBarController {
     
     var word: Word!
+    let synth = AVSpeechSynthesizer()
+    
+    func speak(word: String) {
+        let utterance = AVSpeechUtterance(string: word)
+        synth.speak(utterance)
+    }
     
     override func viewDidLoad() {
         guard word != nil else { return }
@@ -31,5 +38,20 @@ class TabBarViewController: UITabBarController {
         let tabBarList = [firstViewController, secondViewController]
 
         viewControllers = tabBarList
+        navigationController?.title = word.name
+        title = word.name
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        super.viewWillAppear(animated)
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        super.viewWillDisappear(animated)
+    }
+    @IBAction func textToSpeech(_ sender: Any) {
+        speak(word: word.name)
     }
 }

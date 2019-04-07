@@ -26,15 +26,27 @@ class DefinitionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(String(describing: self))
-        
     }
+    
+    @objc func action() {
+        print(#function)
+    }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        self.navigationController?.setNavigationBarHidden(false, animated: true)
+//        super.viewWillAppear(animated)
+//
+//    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        self.navigationController?.setNavigationBarHidden(true, animated: true)
+//        super.viewWillDisappear(animated)
+//    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        tableView.reloadData()
     }
-    
+
     func speak(word: String) {
         let utterance = AVSpeechUtterance(string: "hello world!")
         synth.speak(utterance)
