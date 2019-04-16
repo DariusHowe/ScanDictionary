@@ -13,6 +13,8 @@ import CoreMotion
 
 class TakePhotoViewController: UIViewController {
     @IBOutlet weak var progessView: ProgressView!
+    @IBOutlet weak var steadyLabel: UILabel!
+    @IBOutlet weak var helpText: UILabel!
     
     var pickerData: [String] = []
     
@@ -46,6 +48,7 @@ class TakePhotoViewController: UIViewController {
     }
     
     var deviceSteadyCount = 0
+    var deviceUnsteadyCount = 0
     
     override func viewWillDisappear(_ animated: Bool) {
         print(#function)
@@ -57,26 +60,26 @@ class TakePhotoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         print(#function)
-        if camera.captureSession.isRunning == false {
-            cameraPreview.setupPreview(for: camera.captureSession)
-            camera.run()
-        }
-        
-       
-        
-        scope = ScopeView(frame: CGRect(x: 0, y: 0, width: 250, height: 75))
-        scope.center = cameraPreview.bounds.center
-
-        imageView = UIImageView(frame: self.scope.bounds)
-
-        self.imageView.contentMode = .scaleAspectFit
-        self.scope.contentMode = .scaleAspectFit
-        
-        scope.addSubview(imageView)
-        cameraPreview.addSubview(scope)
-
-        motionDetector.accelerometerUpdateInterval = 0.5
-        startAccelerometer()
+            if camera.captureSession.isRunning == false {
+                cameraPreview.setupPreview(for: camera.captureSession)
+                camera.run()
+            }
+            
+            
+            
+            scope = ScopeView(frame: CGRect(x: 0, y: 0, width: 250, height: 75))
+            scope.center = cameraPreview.bounds.center
+            
+            imageView = UIImageView(frame: self.scope.bounds)
+            
+            self.imageView.contentMode = .scaleAspectFit
+            self.scope.contentMode = .scaleAspectFit
+            
+            scope.addSubview(imageView)
+            cameraPreview.addSubview(scope)
+            
+            motionDetector.accelerometerUpdateInterval = 0.5
+            startAccelerometer()
     }
     
     func startAccelerometer() {
@@ -87,15 +90,25 @@ class TakePhotoViewController: UIViewController {
             if acceleration < 1.02 && acceleration > 0.98 {
                 self.deviceIsSteady = true
                 self.deviceSteadyCount += 1
+                self.deviceUnsteadyCount = 0
+                self.steadyLabel.text = "Steady"
+                self.helpText.isHidden = true
+                self.steadyLabel.textColor = UIColor.green
             } else {
                 self.deviceIsSteady = false
                 self.deviceSteadyCount = 0
+                self.deviceUnsteadyCount += 1
+                self.steadyLabel.text = "Not Steady"
+                self.steadyLabel.textColor = UIColor.red
             }
             if self.deviceSteadyCount >= 6 {
                 print("device is steady:", self.deviceIsSteady)
                 self.deviceSteadyCount = 0
                 self.takePhoto(false)
                 self.motionDetector.stopAccelerometerUpdates()
+            }
+            if self.deviceUnsteadyCount >= 15 {
+                self.helpText.isHidden = false
             }
         }
     }
@@ -196,7 +209,7 @@ extension TakePhotoViewController: G8TesseractDelegate {
             }
         
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
-
+        
                 guard self.tabBarController?.selectedViewController == self else {
                     return
                 }

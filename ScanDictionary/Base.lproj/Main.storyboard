@@ -25,7 +25,7 @@
                                     <constraint firstAttribute="width" secondItem="OaK-xC-LBb" secondAttribute="height" multiplier="3:4" id="rUp-7M-8WF"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="96e-Gf-P3k">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="96e-Gf-P3k" userLabel="PickerView">
                                 <rect key="frame" x="0.0" y="520" width="375" height="98"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w9C-n3-y67">
@@ -46,7 +46,8 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.76854294540000001" green="0.76867610220000004" blue="0.76853454109999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration" label="PickerView"/>
                                 <constraints>
                                     <constraint firstItem="w9C-n3-y67" firstAttribute="top" secondItem="96e-Gf-P3k" secondAttribute="top" id="3y3-38-huk"/>
                                     <constraint firstAttribute="bottom" secondItem="w9C-n3-y67" secondAttribute="bottom" id="4Y9-ta-agD"/>
@@ -61,15 +62,39 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" red="0.027450980392156862" green="0.82352941176470584" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hold the phone steady over a word to scan it" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KPz-ni-WPN">
+                                <rect key="frame" x="21" y="489" width="332" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="uLW-zz-6ut"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Steady" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CrH-a5-zSS">
+                                <rect key="frame" x="142" y="321" width="91" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="PeT-i2-fMo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="20"/>
+                                <color key="textColor" red="1" green="0.058155415100000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="trailing" secondItem="Tl3-TC-HkA" secondAttribute="trailing" id="2aw-I3-Qgm"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="top" secondItem="OaK-xC-LBb" secondAttribute="top" id="6MF-Wc-EfZ"/>
+                            <constraint firstItem="Tl3-TC-HkA" firstAttribute="trailing" secondItem="CrH-a5-zSS" secondAttribute="trailing" constant="142" id="BhE-0v-xmC"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="top" secondItem="OaK-xC-LBb" secondAttribute="bottom" id="FWu-nQ-BBU"/>
+                            <constraint firstItem="96e-Gf-P3k" firstAttribute="top" secondItem="KPz-ni-WPN" secondAttribute="bottom" constant="10" id="IRL-U4-tan"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="trailing" secondItem="OaK-xC-LBb" secondAttribute="trailing" id="VoX-iq-vGQ"/>
+                            <constraint firstItem="CrH-a5-zSS" firstAttribute="leading" secondItem="Tl3-TC-HkA" secondAttribute="leading" constant="142" id="bBJ-ag-QX7"/>
+                            <constraint firstItem="Tl3-TC-HkA" firstAttribute="trailing" secondItem="KPz-ni-WPN" secondAttribute="trailing" constant="22" id="iL2-Ih-xHo"/>
+                            <constraint firstItem="KPz-ni-WPN" firstAttribute="top" secondItem="CrH-a5-zSS" secondAttribute="bottom" constant="144" id="j9G-ZH-ATV"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="leading" secondItem="OaK-xC-LBb" secondAttribute="leading" id="mmo-yG-P4M"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="bottom" secondItem="Tl3-TC-HkA" secondAttribute="bottom" id="nzp-rb-Pgm"/>
+                            <constraint firstItem="KPz-ni-WPN" firstAttribute="leading" secondItem="Tl3-TC-HkA" secondAttribute="leading" constant="21" id="prg-gM-wVE"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="leading" secondItem="Tl3-TC-HkA" secondAttribute="leading" id="wVP-OU-p2F"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tl3-TC-HkA"/>
@@ -77,8 +102,10 @@
                     <tabBarItem key="tabBarItem" title="Take Photo" image="Camera Button" id="1V0-fJ-pWH"/>
                     <connections>
                         <outlet property="cameraPreview" destination="OaK-xC-LBb" id="e1W-gV-601"/>
+                        <outlet property="helpText" destination="KPz-ni-WPN" id="QMO-i2-Dof"/>
                         <outlet property="pickerView" destination="w9C-n3-y67" id="wNp-ng-Zai"/>
                         <outlet property="progessView" destination="Lol-Mh-oEJ" id="zpV-3m-cwO"/>
+                        <outlet property="steadyLabel" destination="CrH-a5-zSS" id="xnE-wQ-3tr"/>
                         <segue destination="ueh-AD-lD9" kind="show" id="cn7-1H-OBV"/>
                     </connections>
                 </viewController>
