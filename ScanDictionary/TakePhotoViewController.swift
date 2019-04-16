@@ -206,10 +206,10 @@ extension TakePhotoViewController: G8TesseractDelegate {
            
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
         
-                if self.navigationController?.visibleViewController == self {
-                    print("VIS")
-
+                guard self.tabBarController?.selectedViewController == self else {
+                    return
                 }
+                
                 self.progessView.setProgress(progress: 0)
                 self.imageView.image = nil
                 self.startAccelerometer()
