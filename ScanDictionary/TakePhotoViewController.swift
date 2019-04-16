@@ -44,7 +44,6 @@ class TakePhotoViewController: UIViewController {
         tesseract.rect = self.cameraPreview.bounds
         tesseract.delegate = self
         tesseract.charWhitelist = "-_(){}[]=%.,?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890/"
-//        cameraPreview.addSubview(imageView)
     }
     
     var deviceSteadyCount = 0
@@ -154,6 +153,7 @@ class TakePhotoViewController: UIViewController {
     
 }
 
+/* Tesseract Functions */
 extension TakePhotoViewController: G8TesseractDelegate {
     func processImage(_ image: UIImage) {
 //        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
@@ -220,7 +220,6 @@ extension TakePhotoViewController: G8TesseractDelegate {
         let okayChars : Set<Character> =
             Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890")
         return String(text.filter {okayChars.contains($0) })
-//        return String(text.characters.filter {okayChars.contains($0) })
     }
     
     func progressImageRecognition(for tesseract: G8Tesseract) {
