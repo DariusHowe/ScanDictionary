@@ -33,6 +33,10 @@ class TakePhotoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
+            print("VISI")
+        }
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
         tesseract.rect = self.cameraPreview.bounds
@@ -190,13 +194,13 @@ extension TakePhotoViewController: G8TesseractDelegate {
                 self.pickerView.reloadAllComponents()
                 self.progessView.setProgress(progress: self.tesseract.progress)
             }
-           
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
         
-                if self.navigationController?.visibleViewController == self {
-                    print("VIS")
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
 
+                guard self.tabBarController?.selectedViewController == self else {
+                    return
                 }
+                
                 self.progessView.setProgress(progress: 0)
                 self.imageView.image = nil
                 self.startAccelerometer()
@@ -225,6 +229,7 @@ extension TakePhotoViewController: G8TesseractDelegate {
 /* Functions specific to searching for words */
 extension TakePhotoViewController {
     @IBAction func search(_ sender: Any) {
+        guard !pickerData.isEmpty else { return }
         let word = pickerData[currentPickerIndex]
         search(for: word)
     }

@@ -28,7 +28,11 @@ class HistoryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(#function)
         let wordNames = DefinitionStorage.getAllWords()
+        print(wordNames.count)
+        items = []
+        filteredItems = []
         for name in wordNames {
             items.append(name)
         }
@@ -127,7 +131,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             DefinitionStorage.remove(items[indexPath.row])
             self.items.remove(at: indexPath.row)
-            self.searchTableView.deleteRows(at: [indexPath], with: .automatic)
+            self.searchTableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 }
