@@ -32,19 +32,8 @@ class DefinitionViewController: UIViewController {
         print(#function)
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        self.navigationController?.setNavigationBarHidden(false, animated: true)
-//        super.viewWillAppear(animated)
-//
-//    }
-//    override func viewWillDisappear(_ animated: Bool) {
-//        self.navigationController?.setNavigationBarHidden(true, animated: true)
-//        super.viewWillDisappear(animated)
-//    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        tableView.reloadData()
     }
 
     func speak(word: String) {

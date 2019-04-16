@@ -142,16 +142,11 @@ class TakePhotoViewController: UIViewController {
                               width: view.frame.size.width * imageViewScale,
                               height: view.frame.size.height * imageViewScale)
         
-        print("Image Size:", image.extent.size)
-        print("Preview Size:", previewSize)
-        print("CropZone:", cropZone)
         let image = image.cropped(to: cropZone)
     
         guard let cgImage = CIContext().createCGImage(image, from:image.extent) else {
             return nil
         }
-        print(self.scope.frame.origin)
-        print(self.imageView.frame.origin)
 
         return UIImage(cgImage: cgImage)
     }
