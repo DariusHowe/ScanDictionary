@@ -24,14 +24,16 @@ class HistoryViewController: UIViewController {
         self.searchTableView.dataSource = self
         self.searchTableView.delegate = self
         self.searchBar.delegate = self
-   
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         let wordNames = DefinitionStorage.getAllWords()
         for name in wordNames {
             items.append(name)
         }
-        
-        
     }
+
 }
 
 
