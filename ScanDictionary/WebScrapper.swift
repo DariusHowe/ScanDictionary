@@ -56,12 +56,16 @@ class WebScrapper: NSObject {
             // In Objective-C you can actually write `context[@"analyze"]` but unfortunately that's
             // not possible in Swift yet.
             if let result = jsAnalyzer?.objectForKeyedSubscript("analyze").call(withArguments: [html, word]) {
-
-                let serialData = try! JSONSerialization.data(withJSONObject: result.toObject(), options: .prettyPrinted)
-                let decoder = JSONDecoder()
-                let word = try! decoder.decode(Word.self, from: serialData)
-            
-                res = word
+                do {
+                    let serialData = try JSONSerialization.data(withJSONObject: result.toObject() as Any, options: .prettyPrinted)
+                    let decoder = JSONDecoder()
+                    let word = try! decoder.decode(Word.self, from: serialData)
+                    
+                    res = word
+                } catch {
+                    print(error.localizedDescription)
+                }
+                
             }
             
             // Call the completion block on the main thread

@@ -11,6 +11,10 @@ import UIKit.UIView
 
 class ScopeView: UIView {
     
+    
+    let lineWidth: CGFloat = 4
+    let color = UIColor(displayP3Red: 7/255.0, green: 210/255.0, blue: 255/255.0, alpha: 1)
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
@@ -27,9 +31,8 @@ class ScopeView: UIView {
         path.addLine(to: CGPoint(x: self.bounds.minX, y: self.bounds.maxY))
         path.addLine(to: CGPoint(x: self.bounds.maxX, y: self.bounds.maxY))
         path.addLine(to: CGPoint(x: self.bounds.maxX, y: self.bounds.minY))
-        path.lineWidth = 2
+        path.lineWidth = lineWidth
         
-        let color = UIColor(displayP3Red: 7/255.0, green: 210/255.0, blue: 255/255.0, alpha: 1)
         color.set()
         
         path.stroke()

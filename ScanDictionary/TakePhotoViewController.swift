@@ -13,10 +13,15 @@ import CoreMotion
 
 class TakePhotoViewController: UIViewController {
     @IBOutlet weak var progessView: ProgressView!
-    @IBOutlet weak var steadyLabel: UILabel!
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    let defaultText = "Center your word over the box & tap to scan"
     @IBOutlet weak var helpText: UILabel!
     
     var pickerData: [String] = []
+    
+    @IBOutlet weak var textContainerView: UIView!
     
     var currentPickerIndex = 0
     @IBOutlet weak var pickerView: UIPickerView!
@@ -24,34 +29,24 @@ class TakePhotoViewController: UIViewController {
     @IBOutlet var cameraPreview: CameraPreview!
     
     let tesseract = G8Tesseract(language:"eng")!
-    let motionDetector = CMMotionManager()
-    var deviceIsSteady = false;
 
     let camera = Camera()
     var scope: ScopeView!
     
-    var imageView: UIImageView!
     let webScrapper = WebScrapper.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
-            print("VISI")
-        }
+        textContainerView.layer.cornerRadius = 10.0
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
         tesseract.rect = self.cameraPreview.bounds
         tesseract.delegate = self
         tesseract.charWhitelist = "-_(){}[]=%.,?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890/"
     }
-    
-    var deviceSteadyCount = 0
-    var deviceUnsteadyCount = 0
+
     
     override func viewWillDisappear(_ animated: Bool) {
-        print(#function)
-        motionDetector.stopAccelerometerUpdates()
         super.viewWillDisappear(animated)
     }
     
@@ -64,58 +59,20 @@ class TakePhotoViewController: UIViewController {
                 camera.run()
             }
             
-            
-            
             scope = ScopeView(frame: CGRect(x: 0, y: 0, width: 250, height: 75))
             scope.center = cameraPreview.bounds.center
-            
-            imageView = UIImageView(frame: self.scope.bounds)
-            
-            self.imageView.contentMode = .scaleAspectFit
+        
             self.scope.contentMode = .scaleAspectFit
             
-            scope.addSubview(imageView)
             cameraPreview.addSubview(scope)
             
-            motionDetector.accelerometerUpdateInterval = 0.5
-            startAccelerometer()
     }
     
-    func startAccelerometer() {
-        motionDetector.startAccelerometerUpdates(to: OperationQueue.current!) { (data,error)in
-            guard let motion = data else { print(error!); return }
-            let acceleration = sqrt((motion.acceleration.x * motion.acceleration.x) + (motion.acceleration.y * motion.acceleration.y) + (motion.acceleration.z * motion.acceleration.z))
-            
-            if acceleration < 1.02 && acceleration > 0.98 {
-                self.deviceIsSteady = true
-                self.deviceSteadyCount += 1
-                self.deviceUnsteadyCount = 0
-                self.steadyLabel.text = "Steady"
-                self.helpText.isHidden = true
-                self.steadyLabel.textColor = UIColor.green
-            } else {
-                self.deviceIsSteady = false
-                self.deviceSteadyCount = 0
-                self.deviceUnsteadyCount += 1
-                self.steadyLabel.text = "Not Steady"
-                self.steadyLabel.textColor = UIColor.red
-            }
-            if self.deviceSteadyCount >= 6 {
-                print("device is steady:", self.deviceIsSteady)
-                self.deviceSteadyCount = 0
-                self.takePhoto(false)
-                self.motionDetector.stopAccelerometerUpdates()
-            }
-            if self.deviceUnsteadyCount >= 15 {
-                self.helpText.isHidden = false
-            }
-        }
-    }
-    
-    @IBAction func takePhoto(_ sender: Any) {
+    @IBAction func onTap(_ sender: UITapGestureRecognizer) {
+        helpText.text = "Loading"
         camera.capture { (ci_image) in
             print(#function)
-
+            
             guard var image = self.crop(ci_image, within: self.scope, previewSize: self.cameraPreview.frame.size) else {
                 return
             }
@@ -124,8 +81,6 @@ class TakePhotoViewController: UIViewController {
             image = luminanceThresholdFilter.image(byFilteringImage: image)!
             
             DispatchQueue.main.async {
-                print(self.tesseract.progress)
-//                self.imageView.image = image
                 self.processImage(image)
             }
         }
@@ -188,7 +143,6 @@ extension TakePhotoViewController: G8TesseractDelegate {
             }
             
             DispatchQueue.main.async {
-//                self.imageView.image = image
                 if let closestWord = closestWord?.0 {
                     let word = self.removeSpecialCharsFromString(text: closestWord)
                     guard !self.pickerData.contains(word) else { return }
@@ -200,19 +154,16 @@ extension TakePhotoViewController: G8TesseractDelegate {
 ////                    add
 //                }
                 self.pickerView.reloadAllComponents()
-                self.progessView.setProgress(progress: self.tesseract.progress)
+//                self.progessView.setProgress(progress: self.tesseract.progress)
+                self.helpText.text = self.defaultText
+                self.progessView.setProgress(progress: 0)
+
             }
         
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
-        
-                guard self.tabBarController?.selectedViewController == self else {
-                    return
-                }
-                
-                self.progessView.setProgress(progress: 0)
-                self.imageView.image = nil
-                self.startAccelerometer()
-            })
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(5), execute: {
+//                self.helpText.text = "Done"
+//                self.progessView.setProgress(progress: 0)
+//            })
         }
     }
     
@@ -237,15 +188,28 @@ extension TakePhotoViewController: G8TesseractDelegate {
 extension TakePhotoViewController {
     @IBAction func search(_ sender: Any) {
         guard !pickerData.isEmpty else { return }
+        
+        toggleActivityIndicator()
         let word = pickerData[currentPickerIndex]
         search(for: word)
     }
     
+    func toggleActivityIndicator() {
+        DispatchQueue.main.async {
+            if self.activityIndicator.isAnimating {
+                self.activityIndicator.stopAnimating()
+            } else {
+                self.activityIndicator.startAnimating()
+            }
+        }
+    }
     private func search(for word: String) {
         print(#function, "for", word)
+
         webScrapper.getDefinition(for: word) { (result) in
             guard let word = result as? Word else {
                 self.searchHelper(result)
+                self.toggleActivityIndicator()
                 return
             }
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -256,8 +220,8 @@ extension TakePhotoViewController {
             tabBar.word = word
             DefinitionStorage.store(word)
             DispatchQueue.main.async {
+                self.toggleActivityIndicator()
                 self.navigationController?.pushViewController(tabBar, animated: true)
-//                self.navigationController?.present(tabBar, animated: true, completion: nil)
             }
         }
     }

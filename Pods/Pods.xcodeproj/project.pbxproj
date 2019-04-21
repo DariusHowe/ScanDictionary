@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -492,7 +492,7 @@
 		12EEA239D502DA531623EC0BF57E7F41 /* GPUImageOutput.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageOutput.m; path = framework/Source/GPUImageOutput.m; sourceTree = "<group>"; };
 		1338862E2657B184DCE6C2F32E402152 /* GPUImageThresholdEdgeDetectionFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageThresholdEdgeDetectionFilter.m; path = framework/Source/GPUImageThresholdEdgeDetectionFilter.m; sourceTree = "<group>"; };
 		134AAD4D2B1E339DD42144F200220C84 /* GPUImageDilationFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageDilationFilter.h; path = framework/Source/GPUImageDilationFilter.h; sourceTree = "<group>"; };
-		13DE7888F47A87A671E46FEFE11F7329 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TesseractOCR.framework; path = TesseractOCRiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13DE7888F47A87A671E46FEFE11F7329 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		145FA72C7EFA233CBF5CAD47A1FAA51D /* GPUImageTwoInputCrossTextureSamplingFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageTwoInputCrossTextureSamplingFilter.m; path = framework/Source/GPUImageTwoInputCrossTextureSamplingFilter.m; sourceTree = "<group>"; };
 		14DBBEC8CECE8C9E72E1BD7204F780EF /* GPUImageRGBOpeningFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageRGBOpeningFilter.h; path = framework/Source/GPUImageRGBOpeningFilter.h; sourceTree = "<group>"; };
 		150FC368A882AB5C200B77F50837E067 /* GPUImageColorMatrixFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageColorMatrixFilter.m; path = framework/Source/GPUImageColorMatrixFilter.m; sourceTree = "<group>"; };
@@ -589,7 +589,7 @@
 		4B9015458E11421D87D66A441C3A37AF /* GPUImageFramework.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageFramework.h; path = framework/Source/iOS/Framework/GPUImageFramework.h; sourceTree = "<group>"; };
 		4C7E5C3D5D01E114E98C58273620D30C /* readbarcode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = readbarcode.h; path = TesseractOCR/include/leptonica/readbarcode.h; sourceTree = "<group>"; };
 		4D04B8C91D99A7C414C92AFD3E8424C3 /* GPUImageSaturationFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageSaturationFilter.h; path = framework/Source/GPUImageSaturationFilter.h; sourceTree = "<group>"; };
-		4D1FC0B4E5A4616BF2F9107B30DD60A8 /* Pods_ScanDictionary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_ScanDictionary.framework; path = "Pods-ScanDictionary.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D1FC0B4E5A4616BF2F9107B30DD60A8 /* Pods_ScanDictionary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanDictionary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D25E64820DB83A2EA51F06155FCFD97 /* GPUImageSaturationBlendFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageSaturationBlendFilter.m; path = framework/Source/GPUImageSaturationBlendFilter.m; sourceTree = "<group>"; };
 		4DF6C640D2A2F0951C3ADE52B106CD9A /* GPUImageFilterGroup.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageFilterGroup.h; path = framework/Source/GPUImageFilterGroup.h; sourceTree = "<group>"; };
 		4E908259E9005E72A5204F39A3D5C0F6 /* GPUImageHueFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageHueFilter.h; path = framework/Source/GPUImageHueFilter.h; sourceTree = "<group>"; };
@@ -608,7 +608,7 @@
 		54B0D5541EEB6F432967759337687CA1 /* GPUImageLineGenerator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageLineGenerator.m; path = framework/Source/GPUImageLineGenerator.m; sourceTree = "<group>"; };
 		54CB4185B34127690B7420F3F01AA451 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		557FDE2E349D80C908711E8C2D0533AD /* GPUImageMonochromeFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageMonochromeFilter.m; path = framework/Source/GPUImageMonochromeFilter.m; sourceTree = "<group>"; };
-		562C3BE33C8A5EAAF5003EEBCFBDFC85 /* G8Tesseract.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = G8Tesseract.mm; path = TesseractOCR/G8Tesseract.mm; sourceTree = "<group>"; };
+		562C3BE33C8A5EAAF5003EEBCFBDFC85 /* G8Tesseract.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = G8Tesseract.mm; path = TesseractOCR/G8Tesseract.mm; sourceTree = "<group>"; };
 		57AE7C21055B5097E37C619702CD5EB7 /* GPUImageFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageFilter.m; path = framework/Source/GPUImageFilter.m; sourceTree = "<group>"; };
 		5875B73E322C7B7A0FB3060E20A966E0 /* GPUImageOpeningFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageOpeningFilter.h; path = framework/Source/GPUImageOpeningFilter.h; sourceTree = "<group>"; };
 		588237B36CF8C3C5BA3725EDD7FAC3C4 /* GPUImageRawDataOutput.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageRawDataOutput.m; path = framework/Source/GPUImageRawDataOutput.m; sourceTree = "<group>"; };
@@ -713,7 +713,7 @@
 		884FE30017F5729839E1969BAF5FDDBD /* GPUImageKuwaharaFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageKuwaharaFilter.h; path = framework/Source/GPUImageKuwaharaFilter.h; sourceTree = "<group>"; };
 		88FD6665007D1381C2B2375C24856376 /* GPUImageSobelEdgeDetectionFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageSobelEdgeDetectionFilter.h; path = framework/Source/GPUImageSobelEdgeDetectionFilter.h; sourceTree = "<group>"; };
 		8A1D8F347ABC60895E919CA5EB7183DE /* GPUImageBuffer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageBuffer.m; path = framework/Source/GPUImageBuffer.m; sourceTree = "<group>"; };
-		8A8483B142EB740D708A5A0E723CFDF6 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = GPUImage.framework; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A8483B142EB740D708A5A0E723CFDF6 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AB04A0727F73823C5BD3A99FB46B821 /* array.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = array.h; path = TesseractOCR/include/leptonica/array.h; sourceTree = "<group>"; };
 		8B43BD090007E9DB7D8F2C265D3EB44E /* GPUImageiOSBlurFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageiOSBlurFilter.h; path = framework/Source/GPUImageiOSBlurFilter.h; sourceTree = "<group>"; };
 		8B641F6E9FABEDEA637B1237C39A8432 /* GPUImageMosaicFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageMosaicFilter.m; path = framework/Source/GPUImageMosaicFilter.m; sourceTree = "<group>"; };
@@ -745,7 +745,7 @@
 		9BCF9646AB20BC93153E9D1ABAABA10D /* GPUImageSaturationFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageSaturationFilter.m; path = framework/Source/GPUImageSaturationFilter.m; sourceTree = "<group>"; };
 		9C9792ED8C293C1B0F9259EBB3CB4EB4 /* dewarp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = dewarp.h; path = TesseractOCR/include/leptonica/dewarp.h; sourceTree = "<group>"; };
 		9D31545DF4FC1D33C2DE0183801A2E2E /* G8TesseractParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = G8TesseractParameters.h; path = TesseractOCR/G8TesseractParameters.h; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9EA22044C3DCFFB6E4D6D67276FD939C /* GPUImageXYDerivativeFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageXYDerivativeFilter.h; path = framework/Source/GPUImageXYDerivativeFilter.h; sourceTree = "<group>"; };
 		9F2ACAB48C1A22571643B87931627673 /* GPUImage3x3TextureSamplingFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImage3x3TextureSamplingFilter.m; path = framework/Source/GPUImage3x3TextureSamplingFilter.m; sourceTree = "<group>"; };
 		9F86CB970852050FC309CFECC2DF2679 /* GPUImageGrayscaleFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageGrayscaleFilter.h; path = framework/Source/GPUImageGrayscaleFilter.h; sourceTree = "<group>"; };
@@ -1349,7 +1349,6 @@
 				6F8CEE0E658A3450A8730CAB2E9B1B1F /* Resources */,
 				4646C17BEAB6E2A071B71AD41DB92E42 /* Support Files */,
 			);
-			name = GPUImage;
 			path = GPUImage;
 			sourceTree = "<group>";
 		};
@@ -1451,7 +1450,6 @@
 				F2F5EA37F3997B446141B8E142B0E2DE /* Frameworks */,
 				25C0CE646305821D66ACE3BFC686BF93 /* Support Files */,
 			);
-			name = TesseractOCRiOS;
 			path = TesseractOCRiOS;
 			sourceTree = "<group>";
 		};
@@ -1845,14 +1843,15 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
 			productRefGroup = C6DC2B0AEE3F1205F36739B560BB0C67 /* Products */;
@@ -2112,6 +2111,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2161,8 +2161,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.2;
 				SYMROOT = "${SRCROOT}/../build";
 			};
@@ -2185,11 +2184,7 @@
 				INFOPLIST_FILE = "Target Support Files/GPUImage/GPUImage-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/GPUImage/GPUImage.modulemap";
 				PRODUCT_MODULE_NAME = GPUImage;
 				PRODUCT_NAME = GPUImage;
@@ -2207,6 +2202,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2284,11 +2280,7 @@
 				INFOPLIST_FILE = "Target Support Files/TesseractOCRiOS/TesseractOCRiOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/TesseractOCRiOS/TesseractOCRiOS.modulemap";
 				PRODUCT_MODULE_NAME = TesseractOCR;
 				PRODUCT_NAME = TesseractOCR;
@@ -2320,11 +2312,7 @@
 				INFOPLIST_FILE = "Target Support Files/GPUImage/GPUImage-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/GPUImage/GPUImage.modulemap";
 				PRODUCT_MODULE_NAME = GPUImage;
 				PRODUCT_NAME = GPUImage;
@@ -2357,11 +2345,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary.modulemap";
 				OTHER_LDFLAGS = "";
@@ -2395,11 +2379,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-ScanDictionary/Pods-ScanDictionary.modulemap";
 				OTHER_LDFLAGS = "";
@@ -2433,11 +2413,7 @@
 				INFOPLIST_FILE = "Target Support Files/TesseractOCRiOS/TesseractOCRiOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/TesseractOCRiOS/TesseractOCRiOS.modulemap";
 				PRODUCT_MODULE_NAME = TesseractOCR;
 				PRODUCT_NAME = TesseractOCR;

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="F4k-L2-Dkp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="F4k-L2-Dkp">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,9 +21,13 @@
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="OaK-xC-LBb" customClass="CameraPreview" customModule="ScanDictionary" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="375" height="500"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="OaK-xC-LBb" secondAttribute="height" multiplier="3:4" id="rUp-7M-8WF"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="KFi-vd-giB" appends="YES" id="MRk-im-qVA"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="96e-Gf-P3k" userLabel="PickerView">
                                 <rect key="frame" x="0.0" y="520" width="375" height="98"/>
@@ -34,26 +38,37 @@
                                             <constraint firstAttribute="width" constant="267" id="UkB-oH-PuD"/>
                                         </constraints>
                                     </pickerView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WBD-8R-oAC">
-                                        <rect key="frame" x="277" y="18.5" width="61" height="61"/>
-                                        <color key="backgroundColor" red="0.76854294540000001" green="0.76867610220000004" blue="0.76853454109999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5BN-BH-xuL" userLabel="Search Button Container">
+                                        <rect key="frame" x="267" y="0.0" width="108" height="98"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WBD-8R-oAC">
+                                                <rect key="frame" x="23.5" y="18.5" width="61" height="61"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="61" id="bRv-T0-ASd"/>
+                                                </constraints>
+                                                <state key="normal" image="SelectWord Button"/>
+                                                <connections>
+                                                    <action selector="search:" destination="Sn8-40-0t8" eventType="touchUpInside" id="APo-hD-ZyD"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="61" id="bRv-T0-ASd"/>
+                                            <constraint firstItem="WBD-8R-oAC" firstAttribute="centerY" secondItem="5BN-BH-xuL" secondAttribute="centerY" id="MRm-2O-Ur4"/>
+                                            <constraint firstItem="WBD-8R-oAC" firstAttribute="centerX" secondItem="5BN-BH-xuL" secondAttribute="centerX" id="cHd-A6-YBp"/>
                                         </constraints>
-                                        <state key="normal" image="SelectWord Button"/>
-                                        <connections>
-                                            <action selector="search:" destination="Sn8-40-0t8" eventType="touchUpInside" id="APo-hD-ZyD"/>
-                                        </connections>
-                                    </button>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.76854294540000001" green="0.76867610220000004" blue="0.76853454109999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration" label="PickerView"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="5BN-BH-xuL" secondAttribute="bottom" id="12G-um-zW1"/>
                                     <constraint firstItem="w9C-n3-y67" firstAttribute="top" secondItem="96e-Gf-P3k" secondAttribute="top" id="3y3-38-huk"/>
                                     <constraint firstAttribute="bottom" secondItem="w9C-n3-y67" secondAttribute="bottom" id="4Y9-ta-agD"/>
+                                    <constraint firstItem="5BN-BH-xuL" firstAttribute="leading" secondItem="w9C-n3-y67" secondAttribute="trailing" id="GWx-gM-foa"/>
+                                    <constraint firstItem="5BN-BH-xuL" firstAttribute="top" secondItem="96e-Gf-P3k" secondAttribute="top" id="Jx1-fO-KFW"/>
                                     <constraint firstItem="w9C-n3-y67" firstAttribute="leading" secondItem="96e-Gf-P3k" secondAttribute="leading" id="Mhi-Pe-uwy"/>
-                                    <constraint firstItem="WBD-8R-oAC" firstAttribute="centerY" secondItem="96e-Gf-P3k" secondAttribute="centerY" id="uI3-S9-fic"/>
-                                    <constraint firstItem="WBD-8R-oAC" firstAttribute="leading" secondItem="w9C-n3-y67" secondAttribute="trailing" constant="10" id="vw7-Sb-6i1"/>
+                                    <constraint firstAttribute="trailing" secondItem="5BN-BH-xuL" secondAttribute="trailing" id="cDU-IB-L9s"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lol-Mh-oEJ" customClass="ProgressView" customModule="ScanDictionary" customModuleProvider="target">
@@ -62,56 +77,64 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" red="0.027450980392156862" green="0.82352941176470584" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hold the phone steady over a word to scan it" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KPz-ni-WPN">
-                                <rect key="frame" x="21" y="489" width="332" height="21"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="UcW-ea-FrK">
+                                <rect key="frame" x="169" y="355" width="37" height="40"/>
+                            </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="50f-gu-8Y0">
+                                <rect key="frame" x="9" y="445" width="357" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Center your word over the box &amp; tap to scan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67O-b2-2ad">
+                                        <rect key="frame" x="10" y="14.5" width="337" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.75457512842465757" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="uLW-zz-6ut"/>
+                                    <constraint firstItem="67O-b2-2ad" firstAttribute="centerY" secondItem="50f-gu-8Y0" secondAttribute="centerY" id="K8c-BG-QzF"/>
+                                    <constraint firstItem="67O-b2-2ad" firstAttribute="leading" secondItem="50f-gu-8Y0" secondAttribute="leading" constant="10" id="hh7-IA-CoI"/>
+                                    <constraint firstAttribute="trailing" secondItem="67O-b2-2ad" secondAttribute="trailing" constant="10" id="jjF-Kc-DiV"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Steady" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CrH-a5-zSS">
-                                <rect key="frame" x="142" y="321" width="91" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="PeT-i2-fMo"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="20"/>
-                                <color key="textColor" red="1" green="0.058155415100000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="trailing" secondItem="Tl3-TC-HkA" secondAttribute="trailing" id="2aw-I3-Qgm"/>
+                            <constraint firstItem="50f-gu-8Y0" firstAttribute="top" secondItem="UcW-ea-FrK" secondAttribute="bottom" constant="50" id="6M1-vu-ycW"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="top" secondItem="OaK-xC-LBb" secondAttribute="top" id="6MF-Wc-EfZ"/>
-                            <constraint firstItem="Tl3-TC-HkA" firstAttribute="trailing" secondItem="CrH-a5-zSS" secondAttribute="trailing" constant="142" id="BhE-0v-xmC"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="top" secondItem="OaK-xC-LBb" secondAttribute="bottom" id="FWu-nQ-BBU"/>
-                            <constraint firstItem="96e-Gf-P3k" firstAttribute="top" secondItem="KPz-ni-WPN" secondAttribute="bottom" constant="10" id="IRL-U4-tan"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="trailing" secondItem="OaK-xC-LBb" secondAttribute="trailing" id="VoX-iq-vGQ"/>
-                            <constraint firstItem="CrH-a5-zSS" firstAttribute="leading" secondItem="Tl3-TC-HkA" secondAttribute="leading" constant="142" id="bBJ-ag-QX7"/>
-                            <constraint firstItem="Tl3-TC-HkA" firstAttribute="trailing" secondItem="KPz-ni-WPN" secondAttribute="trailing" constant="22" id="iL2-Ih-xHo"/>
-                            <constraint firstItem="KPz-ni-WPN" firstAttribute="top" secondItem="CrH-a5-zSS" secondAttribute="bottom" constant="144" id="j9G-ZH-ATV"/>
+                            <constraint firstItem="UcW-ea-FrK" firstAttribute="top" secondItem="Tl3-TC-HkA" secondAttribute="top" constant="335" id="fJI-hz-e2f"/>
+                            <constraint firstItem="UcW-ea-FrK" firstAttribute="centerX" secondItem="Tl3-TC-HkA" secondAttribute="centerX" id="m1i-EQ-RpC"/>
+                            <constraint firstItem="50f-gu-8Y0" firstAttribute="centerX" secondItem="Tl3-TC-HkA" secondAttribute="centerX" id="m4N-Xz-yKd"/>
                             <constraint firstItem="Tl3-TC-HkA" firstAttribute="leading" secondItem="OaK-xC-LBb" secondAttribute="leading" id="mmo-yG-P4M"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="bottom" secondItem="Tl3-TC-HkA" secondAttribute="bottom" id="nzp-rb-Pgm"/>
-                            <constraint firstItem="KPz-ni-WPN" firstAttribute="leading" secondItem="Tl3-TC-HkA" secondAttribute="leading" constant="21" id="prg-gM-wVE"/>
+                            <constraint firstItem="96e-Gf-P3k" firstAttribute="top" secondItem="50f-gu-8Y0" secondAttribute="bottom" constant="25" id="oA0-mx-Xgf"/>
+                            <constraint firstItem="50f-gu-8Y0" firstAttribute="top" secondItem="Tl3-TC-HkA" secondAttribute="top" constant="425" id="v6I-po-U6N"/>
                             <constraint firstItem="96e-Gf-P3k" firstAttribute="leading" secondItem="Tl3-TC-HkA" secondAttribute="leading" id="wVP-OU-p2F"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tl3-TC-HkA"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Take Photo" image="Camera Button" id="1V0-fJ-pWH"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="UcW-ea-FrK" id="yI0-Qg-TmQ"/>
                         <outlet property="cameraPreview" destination="OaK-xC-LBb" id="e1W-gV-601"/>
-                        <outlet property="helpText" destination="KPz-ni-WPN" id="QMO-i2-Dof"/>
+                        <outlet property="helpText" destination="67O-b2-2ad" id="c7V-d9-ivV"/>
                         <outlet property="pickerView" destination="w9C-n3-y67" id="wNp-ng-Zai"/>
                         <outlet property="progessView" destination="Lol-Mh-oEJ" id="zpV-3m-cwO"/>
-                        <outlet property="steadyLabel" destination="CrH-a5-zSS" id="xnE-wQ-3tr"/>
+                        <outlet property="textContainerView" destination="50f-gu-8Y0" id="9z4-6A-3sl"/>
                         <segue destination="ueh-AD-lD9" kind="show" id="cn7-1H-OBV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lgo-Gu-tqO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="KFi-vd-giB">
+                    <connections>
+                        <action selector="onTap:" destination="Sn8-40-0t8" id="g4A-Nu-JAM"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1151" y="649"/>
+            <point key="canvasLocation" x="1149.5999999999999" y="648.12593703148434"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="QJU-Gk-lZc">
