@@ -29,10 +29,16 @@ class HistoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let wordNames = DefinitionStorage.getAllWords()
-        items = []
-        filteredItems = []
-        for name in wordNames {
-            items.append(name)
+        
+        /* Update items if the history has changed */
+        if wordNames.count != items.count {
+            items = []
+            for name in wordNames {
+                items.append(name)
+                print(name)
+            }
+            items.sort()
+            searchTableView.reloadData()
         }
     }
 
@@ -41,15 +47,18 @@ class HistoryViewController: UIViewController {
 
 extension HistoryViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+
         isSearch = true;
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+
         searchBar.resignFirstResponder()
         isSearch = false;
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+
         searchBar.resignFirstResponder()
         isSearch = false;
     }
@@ -60,23 +69,29 @@ extension HistoryViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         if Substring(searchText).count == 0 {
             isSearch = false;
             self.searchTableView.reloadData()
         } else {
-            let pattern = "\\b" + NSRegularExpression.escapedPattern(for: searchText)
-            filteredItems = items.filter {
-                $0.range(of: pattern, options: [.regularExpression, .caseInsensitive]) != nil
-            }
-            print(filteredItems)
-            if(filteredItems.count == 0 && searchText == ""){
-                isSearch = false;
-            } else {
-                isSearch = true;
-            }
-            self.searchTableView.reloadData()
+            filterItems(using: searchText)
         }
+
+    }
+    
+    func filterItems(using filter: String) {
+        
+        let pattern = "\\b" + NSRegularExpression.escapedPattern(for: filter)
+        filteredItems = items.filter {
+            $0.range(of: pattern, options: [.regularExpression, .caseInsensitive]) != nil
+        }
+        print(filteredItems)
+        if(filteredItems.count == 0 && filter == ""){
+            isSearch = false;
+        } else {
+            isSearch = true;
+        }
+        self.searchTableView.reloadData()
+        
     }
 }
 
@@ -90,6 +105,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         configureCell(cell: cell, forRowAtIndexPath: indexPath)
         return cell
@@ -105,6 +121,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
         let word = items[indexPath.row]
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
@@ -120,6 +137,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
 
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+
         if editingStyle == .delete {
             DefinitionStorage.remove(items[indexPath.row])
             self.items.remove(at: indexPath.row)
