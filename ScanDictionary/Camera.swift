@@ -16,23 +16,30 @@ class Camera: NSObject, AVCapturePhotoCaptureDelegate {
     let captureSession = AVCaptureSession()
     
     private let capturePhotoOutput = AVCapturePhotoOutput()
-    @objc var captureDevice: AVCaptureDevice?
-    
+//    @objc private var captureDevice: AVCaptureDevice?
+    private var onCapture: ((CIImage) -> ())?
+
     override init() {
         super.init()
         /* Camera */
-        if let device = AVCaptureDevice.default(for: .video) {
-            self.captureDevice = device
-        } else {
+        guard let device = AVCaptureDevice.default(for: .video) else {
             print("No Camera")
             return
         }
-        self.captureSession.sessionPreset = .photo
-        let input = try! AVCaptureDeviceInput(device: self.captureDevice!)
-        self.captureSession.addInput(input)
         
+        do  {
+            let input = try AVCaptureDeviceInput(device: device)
+            self.captureSession.addInput(input)
+        } catch {
+            print(error)
+            return
+        }
+        
+        self.captureSession.sessionPreset = .photo
+        capturePhotoOutput.connection(with: AVFoundation.AVMediaType.video)?.videoOrientation = .portrait
         self.captureSession.addOutput(self.capturePhotoOutput)
-        capturePhotoOutput.connection(with: AVFoundation.AVMediaType.video)!.videoOrientation = .portrait
+
+        
     }
     
     func run() {
@@ -44,10 +51,9 @@ class Camera: NSObject, AVCapturePhotoCaptureDelegate {
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        
-        guard let data = photo.fileDataRepresentation() else { return }
 
-        let image = CIImage(data: data)!.oriented(CGImagePropertyOrientation.right)
+        guard let data = photo.fileDataRepresentation() else { return }
+        guard let image = CIImage(data: data)?.oriented(CGImagePropertyOrientation.right) else { return }
         onCapture?(image)
     }
     
@@ -60,9 +66,10 @@ class Camera: NSObject, AVCapturePhotoCaptureDelegate {
         }
     }
     
-    var onCapture: ((CIImage) -> ())?
     
     func capture(result: @escaping (CIImage) -> Void) {
+        print(#function)
+        
         let photoSettings = AVCapturePhotoSettings.init(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
         photoSettings.isAutoStillImageStabilizationEnabled = true
         photoSettings.flashMode = .off

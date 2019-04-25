@@ -12,93 +12,100 @@ import GPUImage
 import CoreMotion
 
 class TakePhotoViewController: UIViewController {
-    @IBOutlet weak var progessView: ProgressView!
     
+    @IBOutlet weak var progessView: ProgressView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    /**************/
+    @IBOutlet weak var textContainerView: UIView!
     let defaultText = "Tap on the word you want to scan"
     @IBOutlet weak var helpText: UILabel!
-    
+    /**************/
+
     var pickerData: [String] = []
-    
-    @IBOutlet weak var textContainerView: UIView!
-    
     var currentPickerIndex = 0
     @IBOutlet weak var pickerView: UIPickerView!
     
+    let camera = Camera()
     @IBOutlet var cameraPreview: CameraPreview!
     
     let tesseract = G8Tesseract(language:"eng")!
 
-    let camera = Camera()
+    /**************/
     var scope: UIView!
-    
+    let defaultWidth: CGFloat = 250
+    let defaultHeight: CGFloat = 75
+    /**************/
+
     let webScrapper = WebScrapper.shared
 
+    var state: ControllerState = .Idle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         textContainerView.layer.cornerRadius = 10.0
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
+        /* Tesseract */
         tesseract.rect = self.cameraPreview.bounds
         tesseract.delegate = self
-        tesseract.charWhitelist = "-_(){}[]=%.,?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890/"
+        let allowedCharacters = """
+        ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890
+        `~!@#$%^&*()-_=+{}[]'";:/?.>,<|\\
+        """
+        tesseract.charWhitelist = allowedCharacters
+        scope = UIView(frame: CGRect(x: 0, y: 0, width: defaultWidth, height: defaultHeight))
+        self.scope.contentMode = .scaleAspectFit
+
+        scope.center = cameraPreview.bounds.center
+        tesseract.maximumRecognitionTime = 3
     }
 
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    func shouldCancelImageRecognition(for tesseract: G8Tesseract) -> Bool {
+        print(#function)
+        print(tesseract.progress)
+        return false
     }
-    
-    
-    let defaultWidth: CGFloat = 250
-    let defaultHeight: CGFloat = 75
+
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         print(#function)
-            if camera.captureSession.isRunning == false {
-                cameraPreview.setupPreview(for: camera.captureSession)
-                camera.run()
-            }
-            
-            scope = UIView(frame: CGRect(x: 0, y: 0, width: defaultWidth, height: defaultHeight))
-            scope.center = cameraPreview.bounds.center
-        
-            self.scope.contentMode = .scaleAspectFit
-        
+        if camera.captureSession.isRunning == false {
+            cameraPreview.setupPreview(for: camera.captureSession)
+            camera.run()
             cameraPreview.addSubview(scope)
-            self.activityIndicator.stopAnimating()
+        }
+    
+        self.activityIndicator.stopAnimating()
             
     }
     
-//    @IBAction func onTap(_ sender: UITapGestureRecognizer) {
-//        print(sender.location(in: cameraPreview))
-//        helpText.text = "Loading"
-//        camera.capture { (ci_image) in
-//            print(#function)
-//
-//            guard var image = self.crop(ci_image, within: self.scope, previewSize: self.cameraPreview.frame.size) else {
-//                return
-//            }
-//            let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
-//            luminanceThresholdFilter.threshold = 0.4
-//            image = luminanceThresholdFilter.image(byFilteringImage: image)!
-//
-//            DispatchQueue.main.async {
-//                self.processImage(image)
-//            }
-//        }
-//    }
-    
-    let imageView = UIImageView()
-
+    var recognitionInProgress = false
     @IBAction func onTap(_ sender: UITapGestureRecognizer) {
+        print("Screen tapped")
+        guard state == .Idle else { return }
+        state = .CapturingImage
+        
+        var alpha: CGFloat = 0.7
+        Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { (timer) in
+            if alpha <= 0 {
+                timer.invalidate()
+            } else {
+                DispatchQueue.main.async {
+                    self.scope.backgroundColor = UIColor(white: 0, alpha: alpha)
+                }
+                alpha -= 0.01
+            }
+            
+        })
+        
         helpText.text = "Loading"
         scope.frame.size = CGSize(width: defaultWidth, height: defaultHeight)
-        var location = sender.location(in: self.cameraPreview)
+        let location = sender.location(in: self.cameraPreview)
         var size = scope.frame.size
         
-        print("old center", self.scope.center)
         DispatchQueue.main.async {
             self.scope.center = location
             var origin = self.scope.frame.origin
@@ -107,35 +114,26 @@ class TakePhotoViewController: UIViewController {
                 origin.x -= x
                 size.width += x
                 self.scope.frame = CGRect(origin: origin, size: size)
-//                self.scope.frame.width = 0
             }
-            print("new center within scope", self.scope.center)
         }
-        
-        print("new center", self.scope.center)
-        
+
         camera.capture { (ci_image) in
-            self.imageView.frame = self.scope.bounds
+            print("Image captured")
             
-           
+            /* Crop image */
             guard var image = self.crop(ci_image, within: self.scope, previewSize: self.cameraPreview.frame.size) else {
                 return
             }
-            DispatchQueue.main.async {
-//                self.scope.addSubview(self.imageView)
-                
-//                self.imageView.image = image
-            }
-            
+
+            /* Apply filter */
             let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
             luminanceThresholdFilter.threshold = 0.4
             image = luminanceThresholdFilter.image(byFilteringImage: image)!
             
             DispatchQueue.main.async {
+                self.state = .ProcessingImage
+
                 self.processImage(image)
-//                self.scanForWord(from: image, closestTo: self.scope.bounds.center)
-//                self.processImage(image)
-                
             }
         }
     }
@@ -144,33 +142,18 @@ class TakePhotoViewController: UIViewController {
         let imageViewScale = max(image.extent.width / previewSize.width,
                                  image.extent.height / previewSize.height)
         
-        
-        print("Image size:", image.extent.size)
-        print("Parent size:", previewSize)
-        print("Child size:", view.frame.size)
-        
-        print("Image view scale:", imageViewScale)
-        print("View frame", view.frame)
 
-        var x = view.frame.origin.x * imageViewScale
-        var y = (previewSize.height * imageViewScale) - (view.frame.origin.y * imageViewScale) - (view.frame.size.height * imageViewScale)
-        var width = view.frame.size.width * imageViewScale
-        var height = view.frame.size.height * imageViewScale
+        let x = view.frame.origin.x * imageViewScale
+        let y = (previewSize.height * imageViewScale) - (view.frame.origin.y * imageViewScale) - (view.frame.size.height * imageViewScale)
+        let width = view.frame.size.width * imageViewScale
+        let height = view.frame.size.height * imageViewScale
         
-//        if x < 0 {
-//            width += x
-//            x = 0
-//        }
-//        if y < 0 {
-//            height += y
-//            y = 0
-//        }
+
         // Scale cropRect to handle images larger than shown-on-screen size
         let cropZone = CGRect(x: x,
                               y: y,
                               width: width,
                               height: height)
-        print("Crop zone:", cropZone)
 
         let image = image.cropped(to: cropZone)
     
@@ -189,17 +172,20 @@ class TakePhotoViewController: UIViewController {
 extension TakePhotoViewController: G8TesseractDelegate {
     
     func processImage(_ image: UIImage) {
-//        let stillImageFilter = GPUImageAdaptiveThresholdFilter()
-//        stillImageFilter.blurRadiusInPixels = 4.0
-//        let Tesseractimage = stillImageFilter.image(byFilteringImage: image)!
-//        let luminanceThresholdFilter = GPUImageLuminanceThresholdFilter()
-//        luminanceThresholdFilter.threshold = 0.4
-//        let image = luminanceThresholdFilter.image(byFilteringImage: image)!
+        guard self.recognitionInProgress == false else { return }
+        self.recognitionInProgress = true
+        
         tesseract.image = image
 
+        print("Tesseract is processing")
 
+        /* 'self.tesseract.recognize()' will block the thread so we must
+            use a background thread                                     */
         DispatchQueue.global(qos: .userInteractive).async {
             self.tesseract.recognize()
+            print("Tesseract processing is complete")
+            self.recognitionInProgress = false
+
             var iteratorLevel = G8PageIteratorLevel.textline
             var blocks = self.tesseract.recognizedBlocks(by: iteratorLevel)
             
@@ -207,10 +193,13 @@ extension TakePhotoViewController: G8TesseractDelegate {
             blocks = self.tesseract.recognizedBlocks(by: iteratorLevel)
 
             var closestWord: (String, CGFloat)?
-            
             if let blocks = blocks as? [G8RecognizedBlock] {
+                print("Tesseract found the following words")
                 let center = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size).center
                 for block in blocks {
+                    print("""
+                        \t"\(block.text ?? "NA")" with confidence: \(block.confidence)
+                        """)
                     let distance = center.distance(from: block.boundingBox(atImageOf: image.size).center)
                     if closestWord == nil {
                         closestWord = (block.text, distance)
@@ -220,76 +209,30 @@ extension TakePhotoViewController: G8TesseractDelegate {
                 }
             }
             
+            /* Update UI on main thread */
             DispatchQueue.main.async {
-                if let closestWord = closestWord?.0 {
-                    let word = self.removeSpecialCharsFromString(text: closestWord)
-                    guard word != "" && word != " " else { return }
-                    guard !self.pickerData.contains(word) else { return }
-                    
-                    self.pickerData.insert(word, at: 0)
-                }
-                
-//                if !self.pickerData.contains(closestWord!.0) {
-////                    add
-//                }
-                self.pickerView.reloadAllComponents()
-//                self.progessView.setProgress(progress: self.tesseract.progress)
                 self.helpText.text = self.defaultText
                 self.progessView.setProgress(progress: 0)
+                self.state = .Idle
+
+                if let closestWord = closestWord?.0 {
+                    print("word in center:", "\"" + closestWord + "\"")
+                    let word = self.removeSpecialCharsFromString(text: closestWord)
+                    guard word != "" && word != " " else {
+                        print("Word is space")
+                        return }
+                    guard !self.pickerData.contains(word) else {
+                        print("Word already found")
+                        return }
+                    
+                    self.pickerData.insert(word, at: 0)
+                    self.pickerView.reloadAllComponents()
+                }
 
             }
         }
         
     }
-        
-//        func scanForWord(from image: UIImage, closestTo point: CGPoint) {
-//            tesseract.image = image
-//            
-//            
-//            DispatchQueue.global(qos: .userInteractive).async {
-//                self.tesseract.recognize()
-//                var iteratorLevel = G8PageIteratorLevel.textline
-//                var blocks = self.tesseract.recognizedBlocks(by: iteratorLevel)
-//                
-//                iteratorLevel = G8PageIteratorLevel.word
-//                blocks = self.tesseract.recognizedBlocks(by: iteratorLevel)
-//                
-//                var closestWord: (String, CGFloat)?
-//                
-//                if let blocks = blocks as? [G8RecognizedBlock] {
-//                    for block in blocks {
-//                        let distance = point.distance(from: block.boundingBox(atImageOf: image.size).center)
-//                        print(block.text ?? "", "of location", block.boundingBox(atImageOf: image.size).center, "is", distance, "from center")
-//                        if closestWord == nil {
-//                            closestWord = (block.text, distance)
-//                        } else if closestWord!.1 > distance {
-//                            closestWord = (block.text, distance)
-//                        }
-//                    }
-//                }
-//                
-//                DispatchQueue.main.async {
-//                    if let closestWord = closestWord?.0 {
-//                        let word = self.removeSpecialCharsFromString(text: closestWord)
-//                        guard word != "" && word != " " else { return }
-//                        print(word)
-//                        print(word.count)
-//
-//                        guard !self.pickerData.contains(word) else { return }
-//                        
-//                        self.pickerData.insert(word, at: 0)
-//                    }
-//                    
-//    //                if !self.pickerData.contains(closestWord!.0) {
-//    ////                    add
-//    //                }
-//                    self.pickerView.reloadAllComponents()
-//                    self.helpText.text = self.defaultText
-//                    self.progessView.setProgress(progress: 0)
-//                    
-//                }
-//            }
-//        }
     
     func removeSpecialCharsFromString(text: String) -> String {
         let okayChars : Set<Character> =
@@ -421,4 +364,10 @@ extension CGPoint {
         let yDist = y - point.y
         return CGFloat(sqrt(xDist * xDist + yDist * yDist))
     }
+}
+
+enum ControllerState {
+    case Idle
+    case CapturingImage
+    case ProcessingImage
 }
