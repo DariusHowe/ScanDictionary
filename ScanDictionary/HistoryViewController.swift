@@ -35,7 +35,6 @@ class HistoryViewController: UIViewController {
             items = []
             for name in wordNames {
                 items.append(name)
-                print(name)
             }
             items.sort()
             searchTableView.reloadData()
@@ -84,7 +83,6 @@ extension HistoryViewController: UISearchBarDelegate {
         filteredItems = items.filter {
             $0.range(of: pattern, options: [.regularExpression, .caseInsensitive]) != nil
         }
-        print(filteredItems)
         if(filteredItems.count == 0 && filter == ""){
             isSearch = false;
         } else {

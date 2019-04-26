@@ -82,8 +82,111 @@ class TakePhotoViewController: UIViewController {
             
     }
     
+//    @IBAction func onLongPress(_ sender: UILongPressGestureRecognizer) {
+//        print(#function, sender.state.rawValue)
+//        let location = sender.location(in: self.cameraPreview)
+//
+//        let maxSize = CGSize(width: defaultWidth, height: defaultHeight)
+//        if sender.state == UIGestureRecognizer.State.began {
+//            let transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+//
+//            DispatchQueue.main.async {
+//                self.scope.frame.size = maxSize.applying(transform)
+//                self.scope.center = location
+//            }
+//
+//        }
+//        if sender.state == UIGestureRecognizer.State.ended {
+//            DispatchQueue.main.async {
+//                self.scope.frame.size = maxSize
+//                self.scope.center = location
+//
+//            }
+//        } else {
+//            if timer?.isValid ?? false {
+//                return
+//            } else {
+//                expandScope(location)
+//            }
+//        }
+//    }
+    
+    @IBAction func onLongPress(_ sender: UILongPressGestureRecognizer) {
+        let location = sender.location(in: self.cameraPreview)
+        
+        let maxSize = CGSize(width: defaultWidth, height: defaultHeight)
+        
+        switch sender.state {
+        case .began:
+            let transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            
+            DispatchQueue.main.async {
+                self.scope.frame.size = maxSize.applying(transform)
+                self.scope.center = location
+            }
+            if timer?.isValid ?? false {
+                return
+            } else {
+                expandScope()
+            }
+            break;
+        case .changed:
+            DispatchQueue.main.async {
+                self.scope.center = location
+            }
+        case .ended:
+            timer?.invalidate()
+            timer = nil
+            DispatchQueue.main.async {
+                self.scope.center = location
+                var origin = self.scope.frame.origin
+                let x = self.scope.frame.origin.x
+                let y = self.scope.frame.origin.y
+                var currentSize = self.scope.frame.size
+
+                if x < 0 {
+                    origin.x -= x
+                    currentSize.width += x
+                    self.scope.frame = CGRect(origin: origin, size: currentSize)
+                }
+                if y < 0 {
+                    origin.y -= y
+                    currentSize.height += y
+                    self.scope.frame = CGRect(origin: origin, size: currentSize)
+                }
+            }
+            onTap(sender)
+            break;
+        default:
+            break;
+        }
+    }
+    
+    
+    var timer: Timer?
+    func expandScope() {
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { (timer) in
+            DispatchQueue.main.async {
+                let currentSize = self.scope.frame.size
+                if currentSize.width > self.defaultWidth {
+                    timer.invalidate()
+                }
+                let center = self.scope.center
+                let transform = CGAffineTransform(scaleX: 1.01, y: 1.01)
+                self.scope.frame.size = currentSize.applying(transform)
+                self.scope.center = center
+                print("size:", self.scope.frame.size)
+                
+                
+                self.scope.backgroundColor = UIColor(white: 0, alpha: 0.7)
+                
+            }
+        })
+    }
+    
+   
     var recognitionInProgress = false
-    @IBAction func onTap(_ sender: UITapGestureRecognizer) {
+    @IBAction func onTap(_ sender: UIGestureRecognizer) {
         print("Screen tapped")
         guard state == .Idle else { return }
         state = .CapturingImage
@@ -102,7 +205,10 @@ class TakePhotoViewController: UIViewController {
         })
         
         helpText.text = "Loading"
-        scope.frame.size = CGSize(width: defaultWidth, height: defaultHeight)
+        if sender == sender as? UITapGestureRecognizer {
+            scope.frame.size = CGSize(width: defaultWidth, height: defaultHeight)
+
+        }
         let location = sender.location(in: self.cameraPreview)
         var size = scope.frame.size
         

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="F4k-L2-Dkp">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,11 +15,11 @@
             <objects>
                 <viewController id="Sn8-40-0t8" customClass="TakePhotoViewController" customModule="ScanDictionary" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VPD-Z1-1P3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="OaK-xC-LBb" customClass="CameraPreview" customModule="ScanDictionary" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="500"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="450"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -27,22 +27,23 @@
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="KFi-vd-giB" appends="YES" id="MRk-im-qVA"/>
+                                    <outletCollection property="gestureRecognizers" destination="8oq-Wx-bo7" appends="YES" id="iD2-qz-qFb"/>
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="96e-Gf-P3k" userLabel="PickerView">
-                                <rect key="frame" x="0.0" y="520" width="375" height="98"/>
+                                <rect key="frame" x="0.0" y="470" width="320" height="49"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w9C-n3-y67">
-                                        <rect key="frame" x="0.0" y="0.0" width="267" height="98"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="267" height="49"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="267" id="UkB-oH-PuD"/>
                                         </constraints>
                                     </pickerView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5BN-BH-xuL" userLabel="Search Button Container">
-                                        <rect key="frame" x="267" y="0.0" width="108" height="98"/>
+                                        <rect key="frame" x="267" y="0.0" width="53" height="49"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WBD-8R-oAC">
-                                                <rect key="frame" x="23.5" y="18.5" width="61" height="61"/>
+                                                <rect key="frame" x="-4" y="-6" width="61" height="61"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="61" id="bRv-T0-ASd"/>
                                                 </constraints>
@@ -78,13 +79,13 @@
                                 <color key="tintColor" red="0.027450980392156862" green="0.82352941176470584" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="UcW-ea-FrK">
-                                <rect key="frame" x="169" y="355" width="37" height="40"/>
+                                <rect key="frame" x="141.5" y="355" width="37" height="40"/>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="50f-gu-8Y0">
-                                <rect key="frame" x="49.5" y="445" width="276.5" height="50"/>
+                                <rect key="frame" x="22" y="445" width="276.5" height="0.0"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap on the word you want to scan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67O-b2-2ad">
-                                        <rect key="frame" x="10" y="14.5" width="256.5" height="21"/>
+                                        <rect key="frame" x="10" y="-10.5" width="256.5" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -133,6 +134,11 @@
                         <action selector="onTap:" destination="Sn8-40-0t8" id="g4A-Nu-JAM"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="8oq-Wx-bo7">
+                    <connections>
+                        <action selector="onLongPress:" destination="Sn8-40-0t8" id="Y2R-M7-R07"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1149.5999999999999" y="648.12593703148434"/>
         </scene>
@@ -151,39 +157,40 @@
                     <connections>
                         <segue destination="Sn8-40-0t8" kind="relationship" relationship="viewControllers" id="fv6-L9-L23"/>
                         <segue destination="F1I-Xe-Jij" kind="relationship" relationship="viewControllers" id="aCl-h4-h3T"/>
+                        <segue destination="gM5-dm-VRf" kind="relationship" relationship="viewControllers" id="saJ-uv-MPO"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yxM-5F-X1j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="188" y="1013"/>
+            <point key="canvasLocation" x="240" y="1012"/>
         </scene>
         <!--History-->
         <scene sceneID="rfX-Lq-b7K">
             <objects>
                 <viewController id="F1I-Xe-Jij" customClass="HistoryViewController" customModule="ScanDictionary" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ecs-L3-Bxq">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Navigation Bar" translatesAutoresizingMaskIntoConstraints="NO" id="Igb-hp-drm">
-                                <rect key="frame" x="-4" y="0.0" width="383" height="60"/>
+                                <rect key="frame" x="-4" y="0.0" width="328" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="zk1-bZ-svs"/>
                                 </constraints>
                             </imageView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="bfJ-LI-UOa">
-                                <rect key="frame" x="0.0" y="53" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="53" width="320" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cS3-bH-1Ys">
-                                <rect key="frame" x="0.0" y="109" width="375" height="509"/>
+                                <rect key="frame" x="0.0" y="109" width="320" height="410"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="EWW-cX-Gcj">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EWW-cX-Gcj" id="71l-nP-nL9">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -213,7 +220,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SeV-FE-7Ay" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1231" y="1782"/>
+            <point key="canvasLocation" x="1150" y="1406"/>
         </scene>
         <!--word-->
         <scene sceneID="Vnw-lp-Gv3">
@@ -257,30 +264,30 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ieS-B9-iRX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2062" y="2081"/>
+            <point key="canvasLocation" x="2366" y="648"/>
         </scene>
         <!--Test-->
         <scene sceneID="36b-IG-E4n">
             <objects>
                 <viewController storyboardIdentifier="DefinitionViewController" title="Test" id="GNp-eL-urb" customClass="DefinitionViewController" customModule="ScanDictionary" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="D4K-oR-yZA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="acE-eL-BxC">
-                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="499"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="67" id="3Yd-ol-vXS" customClass="DefinitionViewCell" customModule="ScanDictionary" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="67"/>
+                                        <rect key="frame" x="0.0" y="28" width="320" height="67"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3Yd-ol-vXS" id="csv-mL-E78">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="66.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="66.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sAx-Xj-Ds1">
-                                                    <rect key="frame" x="15" y="10" width="12" height="20.5"/>
+                                                    <rect key="frame" x="15" y="10" width="5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -341,18 +348,67 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bkf-Lk-byA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3126" y="1662"/>
+            <point key="canvasLocation" x="3126" y="188"/>
+        </scene>
+        <!--Add-->
+        <scene sceneID="xRJ-nF-9eP">
+            <objects>
+                <viewController id="gM5-dm-VRf" customClass="AddDefintionViewController" customModule="ScanDictionary" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fuA-Pf-k8d">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="IOC-8Q-JzO">
+                                <rect key="frame" x="0.0" y="20" width="320" height="29"/>
+                                <segments>
+                                    <segment title="Add"/>
+                                    <segment title="Edit"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedControl:" destination="gM5-dm-VRf" eventType="valueChanged" id="o0A-U9-fmB"/>
+                                </connections>
+                            </segmentedControl>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IMS-ba-TGE">
+                                <rect key="frame" x="0.0" y="48" width="320" height="471"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="IOC-8Q-JzO" firstAttribute="top" secondItem="jri-Q2-nEk" secondAttribute="top" id="03k-hP-TIb"/>
+                            <constraint firstItem="IMS-ba-TGE" firstAttribute="top" secondItem="IOC-8Q-JzO" secondAttribute="bottom" id="3MP-C3-mGQ"/>
+                            <constraint firstItem="IOC-8Q-JzO" firstAttribute="leading" secondItem="jri-Q2-nEk" secondAttribute="leading" id="5Tj-TP-sVF"/>
+                            <constraint firstItem="jri-Q2-nEk" firstAttribute="bottom" secondItem="IMS-ba-TGE" secondAttribute="bottom" id="P72-MR-x7j"/>
+                            <constraint firstItem="IMS-ba-TGE" firstAttribute="leading" secondItem="jri-Q2-nEk" secondAttribute="leading" id="POp-21-EaW"/>
+                            <constraint firstItem="jri-Q2-nEk" firstAttribute="trailing" secondItem="IMS-ba-TGE" secondAttribute="trailing" id="XFW-5S-Mfe"/>
+                            <constraint firstItem="jri-Q2-nEk" firstAttribute="trailing" secondItem="IOC-8Q-JzO" secondAttribute="trailing" id="wLQ-Fd-MBT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="jri-Q2-nEk"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Add" id="846-MJ-HPz"/>
+                    <connections>
+                        <outlet property="segmentedContol" destination="IOC-8Q-JzO" id="Yib-jq-jPg"/>
+                        <outlet property="wkWebView" destination="IMS-ba-TGE" id="ia8-cv-hNt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KOf-vm-Q6x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1150" y="2167"/>
         </scene>
         <!--Item-->
         <scene sceneID="ii1-un-odP">
             <objects>
                 <viewController id="Q4H-Yk-hue" customClass="WebkitViewController" customModule="ScanDictionary" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="M3v-vN-I1B">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFL-K2-Mo3">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -360,7 +416,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrn-Ap-5DI">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <items>
                                     <navigationItem title="Title" id="kr4-D5-RPO"/>
                                 </items>
@@ -382,7 +438,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eJT-9S-mdk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3126" y="2432"/>
+            <point key="canvasLocation" x="3126" y="1012"/>
         </scene>
     </scenes>
     <resources>

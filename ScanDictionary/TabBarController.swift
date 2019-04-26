@@ -54,4 +54,8 @@ class TabBarViewController: UITabBarController {
     @IBAction func textToSpeech(_ sender: Any) {
         speak(word: word.name)
     }
+    
+    deinit {
+        print(#function, String(describing: self))
+    }
 }
