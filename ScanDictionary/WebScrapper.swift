@@ -75,6 +75,39 @@ class WebScrapper: NSObject {
         }
     }
     
+    func getDatabaseDefintions(for word: String, completion: @escaping (_ res: [String]) -> Void) {
+        // Run this asynchronously in the background
+        DispatchQueue.global(qos: .userInitiated).async {
+            var res: [String] = []
+            
+            let jsModule = self.context.objectForKeyedSubscript("ScanDictionary")
+            let jsAnalyzer = jsModule?.objectForKeyedSubscript("Analyzer")
+            
+            let url = URL(string: "http://www.vocab.mychatbot.xyz/html/getresult.php?word=" + word)!
+
+            print(url)
+
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                guard let data = data else {
+                    return }
+                let html = String(data: data, encoding: .utf8)!
+                print("Getting result")
+                if let result = jsAnalyzer?.objectForKeyedSubscript("getDatabaseDefintions").call(withArguments: [html, word]) {
+                    let data = result.toArray() as! [String]
+                    res = data
+                    // Call the completion block on the main thread
+                    DispatchQueue.main.async {
+                        completion(res)
+                    }
+                }
+            }.resume()
+            
+            
+
+        }
+    }
+    
+    
     func getSuggestion(_ html: String, completion: @escaping (_ res: String) -> Void) {
         // Run this asynchronously in the background
         DispatchQueue.global(qos: .userInitiated).async {
@@ -97,6 +130,7 @@ class WebScrapper: NSObject {
         
         let webScrapper = WebScrapper.shared
         URLSession.shared.dataTask(with: url) { (data, response, error) in
+            print("retreived html")
             guard let data = data else { return }
             let finalData = String(data: data, encoding: .utf8)!
             guard let path = response?.url?.lastPathComponent else { return }

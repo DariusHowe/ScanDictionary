@@ -77,5 +77,21 @@ export class Analyzer {
     return word;
   }
 
+
+  static getDatabaseDefintions(html, word) {
+
+    if (typeof nativeLog === 'function') { nativeLog('Analyzing') }
+
+    const $ = cheerio.load(html);
+    const items = $('p');
+    var defintions = []
+    $(items).each((i, elem) => {
+
+      defintions[i] = $(elem).text();
+    });
+    
+    return defintions;
+  }
+
   
 };

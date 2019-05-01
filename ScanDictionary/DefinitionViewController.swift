@@ -13,6 +13,7 @@ class DefinitionViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     let SectionHeaderHeight: CGFloat = 25
+    var databaseDefintions: [String] = []
     
     var word: Word? {
         didSet {
@@ -25,7 +26,14 @@ class DefinitionViewController: UIViewController {
 
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        print(#function)
+        WebScrapper.shared.getDatabaseDefintions(for: word!.name) { (def) in
+            print(def)
+            self.databaseDefintions = def
+            self.tableView.reloadData()
+        }
     }
     
     @objc func action() {
@@ -49,14 +57,21 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         guard let word = word else { return 0 }
         let dl = word.definitionLists
-
+        print(#function)
+        if !databaseDefintions.isEmpty {
+            print("GOOD")
+            return dl.count + 1
+        }
         return dl.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Using Swift's optional lookup we first check if there is a valid section of table.
         // Then we check that for the section there is data that goes with.
-        if let definitions = word?.definitionLists[section].definitions {
+        if word?.definitionLists.count == section {
+            return databaseDefintions.count
+        }
+        else if let definitions = word?.definitionLists[section].definitions {
             return definitions.count
         }
         return 0
@@ -74,6 +89,11 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.black
 
+        guard word?.definitionLists.count != section else {
+            label.text = "from database"
+            view.addSubview(label)
+            return view
+        }
         guard let word = word else { return nil }
         let category = word.definitionLists[section].category
 
@@ -84,12 +104,23 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DefinitionViewCell
         
         
 //        print("Setting section \(indexPath.section), row \(indexPath.row)")
-        if let definition = word?.definitionLists[indexPath.section].definitions[indexPath.row] {
+        print(#function, "index", indexPath.row, "section", indexPath.section)
+        guard word?.definitionLists.count != indexPath.section else {
+            print("cell")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DBCell", for: indexPath) as! DatabaseDefintionCell
+            print("return")
             
+            cell.defintionLabel.text = databaseDefintions[indexPath.row]
+            print("return")
+            return cell
+
+        }
+        if let definition = word?.definitionLists[indexPath.section].definitions[indexPath.row] {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DefinitionViewCell
+
             let description = NSAttributedString(string: definition.description)
             
             if let label = definition.label {
@@ -100,15 +131,16 @@ extension DefinitionViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 cell.descriptionLabel.attributedText = description
             }
-
-            
-
             cell.item.text = String(indexPath.row + 1) + "."
             cell.example.text = definition.example
+            return cell
 
 
         }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DefinitionViewCell
+
         return cell
+
     }
 }
 
@@ -118,5 +150,11 @@ class DefinitionViewCell: UITableViewCell {
     
     @IBOutlet weak var example: UILabel!
     @IBOutlet weak var item: UILabel!
+}
+
+
+class DatabaseDefintionCell: UITableViewCell {
+    @IBOutlet weak var defintionLabel: UILabel!
+  
 }
 

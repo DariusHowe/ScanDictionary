@@ -18603,6 +18603,22 @@ class Analyzer {
     return word;
   }
 
+
+  static getDatabaseDefintions(html, word) {
+
+    if (typeof nativeLog === 'function') { nativeLog('Analyzing') }
+
+    const $ = __WEBPACK_IMPORTED_MODULE_0_cheerio__["load"](html);
+    const items = $('p');
+    var defintions = []
+    $(items).each((i, elem) => {
+
+      defintions[i] = $(elem).text();
+    });
+    
+    return defintions;
+  }
+
   
 }
 /* harmony export (immutable) */ __webpack_exports__["Analyzer"] = Analyzer;
